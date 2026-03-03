@@ -66,6 +66,7 @@ class ClusterResult(BaseModel):
     summary: str
     items: List[ClusterItem]
     embedding: Optional[List[float]] = None
+    is_learning: bool = False
 
 class SessionClusteringResponse(BaseModel):
     """Response model for session-based clustering"""
