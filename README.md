@@ -17,11 +17,13 @@ Browse normally. Obra silently collects, clusters, and indexes everything. When 
 - **Semantic search** — Two-stage retrieval: finds relevant clusters first, then individual pages within them
 - **Agentic chat** — Multi-step conversational interface with native tool calling; the assistant can search your history, filter by date/domain, and chain reasoning across multiple steps
 - **Monitoring** — Built-in request tracing, LLM cost tracking, and a `/metrics` endpoint
+- **Topic tracking API** — Backend endpoints available under `/tracking/*` (frontend integration in progress)
+- **Quiz API** — Backend endpoints available under `/quiz/*` (frontend integration in progress)
 
 ### Coming next
 
-- **Topic tracking** — Visualize how long since you revisited a subject, with forgetting curve graphs and smart reminders
-- **Quiz & flashcards** — Auto-generated from your browsing content, triggered when a topic is fading from memory
+- **Tracking dashboard** — Visualize forgetting curves and due topics in the dashboard
+- **Quiz & flashcards UI** — Generate/answer quiz sets directly from the extension interface
 
 ## Demo
 
@@ -55,7 +57,9 @@ cp env.template .env
 ./scripts/dev_up.ps1
 ```
 
-Or manually: `docker-compose up --build -d`
+Or manually: `docker compose up --build -d`
+
+Schema lifecycle is handled by Alembic (via the `migrate` one-shot service in Compose).
 
 3. **Build the frontend**
 
@@ -75,13 +79,11 @@ Chrome Extension (MV3)
 ├── React Dashboard ──── 3-column layout (sidebar / content / chat)
 │
 └──► FastAPI Backend
-     ├── Clustering Service ── LLM + embedding assignment
-     ├── Chat Service ──────── agentic loop with tool calling
-     ├── Search Service ────── two-stage semantic search (pgvector)
-     ├── LLM Providers ────── Google, OpenAI, Anthropic, Ollama
-     ├── Monitoring ────────── structured logging, request tracing, cost tracking
+     ├── Modular domains ───── assistant / session_intelligence / recall_engine / learning_content / identity / outbox
+     ├── API routers ───────── /chat, /cluster-session, /tracking/*, /quiz/*, /workers/*
+     ├── Shared infra ──────── providers, embeddings, repositories, monitoring
      │
-     └──► PostgreSQL + pgvector (768-dim embeddings, HNSW indexes)
+     └──► PostgreSQL + pgvector (768-dim embeddings, HNSW indexes) + Alembic migrations
 ```
 
 ## Project Structure
@@ -98,12 +100,14 @@ obra/
 │   ├── stores/             # Zustand state (sessions, chat, UI)
 │   └── layouts/            # AppLayout, Sidebar
 ├── backend/app/
-│   ├── services/           # Clustering, chat, search, LLM providers
-│   ├── tools/              # Chat tool definitions (search_history, ...)
-│   ├── models/             # Pydantic, SQLAlchemy, tool models
-│   ├── repositories/       # Database access (repository pattern)
+│   ├── modules/            # Bounded modules (assistant, session_intelligence, recall_engine, learning_content, identity, outbox, shared)
+│   ├── core/               # Container/composition root
+│   ├── models/             # Pydantic + SQLAlchemy models
+│   ├── repositories/       # Persistence adapters
 │   ├── monitoring/         # Metrics, decorators, structured logging
-│   └── middleware/         # Request tracing
+│   ├── middleware/         # Request tracing
+│   └── workers/            # Worker entrypoints (outbox)
+├── backend/alembic/        # Schema migrations
 ├── scripts/                # Dev utilities
 └── docker-compose.yml
 ```

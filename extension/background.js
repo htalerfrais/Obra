@@ -118,6 +118,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     const healthResult = await apiService.checkHealth();
                     sendResponse(healthResult);
                     break;
+
+                case 'getTrackedTopics': {
+                    const token = await self.Services.authService.getToken();
+                    const topicsResult = await apiService.getTrackedTopics(token, request.dueOnly);
+                    sendResponse(topicsResult);
+                    break;
+                }
+
+                case 'recomputeTracking': {
+                    const token = await self.Services.authService.getToken();
+                    const recomputeResult = await apiService.recomputeTracking(token);
+                    sendResponse(recomputeResult);
+                    break;
+                }
                     
                 default:
                     sendResponse({ error: 'Unknown action' });

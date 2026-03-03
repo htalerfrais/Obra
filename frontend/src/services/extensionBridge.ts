@@ -1,5 +1,7 @@
 /// <reference types="chrome"/>
 
+import type { TopicTrackingResponse } from '../types/tracking';
+
 declare global {
   interface Window {
     ExtensionConstants: any;
@@ -175,6 +177,33 @@ class ExtensionBridge {
       return result;
     } catch (error) {
       console.error('Error sending chat message:', error);
+      throw error;
+    }
+  }
+
+  async getTrackedTopics(dueOnly = false): Promise<TopicTrackingResponse> {
+    try {
+      await this.waitForReady();
+      const result = await this.sendMessage<{ success: boolean; data?: TopicTrackingResponse; error?: string }>({
+        action: 'getTrackedTopics',
+        dueOnly,
+      });
+      if (!result.success) throw new Error((result as any).error || 'Failed to get tracked topics');
+      return result.data as TopicTrackingResponse;
+    } catch (error) {
+      console.error('Error getting tracked topics:', error);
+      throw error;
+    }
+  }
+
+  async recomputeTracking(): Promise<{ success: boolean; data?: { updated: number } }> {
+    try {
+      await this.waitForReady();
+      return await this.sendMessage<{ success: boolean; data?: { updated: number } }>({
+        action: 'recomputeTracking',
+      });
+    } catch (error) {
+      console.error('Error recomputing tracking:', error);
       throw error;
     }
   }

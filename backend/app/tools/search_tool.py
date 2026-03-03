@@ -6,7 +6,7 @@ from app.config import settings
 from app.models.tool_models import ToolDefinition
 from app.models.chat_models import SearchFilters
 from app.models.session_models import ClusterResult, ClusterItem
-from app.services.search_service import SearchService
+from app.modules.session_intelligence.application.search_use_case import SearchUseCase
 from .base import BaseTool
 
 logger = logging.getLogger(__name__)
@@ -51,8 +51,8 @@ class SearchHistoryTool(BaseTool):
         },
     )
 
-    def __init__(self, search_service: SearchService):
-        self.search_service = search_service
+    def __init__(self, search_use_case: SearchUseCase):
+        self.search_use_case = search_use_case
 
     @property
     def definition(self) -> ToolDefinition:
@@ -63,7 +63,7 @@ class SearchHistoryTool(BaseTool):
 
         logger.info(f"search_history: query='{filters.query_text}', filters={filters}")
 
-        clusters, items = await self.search_service.search(
+        clusters, items = await self.search_use_case.search(
             user_id=user_id,
             filters=filters,
         )

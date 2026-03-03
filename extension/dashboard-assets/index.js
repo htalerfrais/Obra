@@ -14441,7 +14441,7 @@ const createLucideIcon = (iconName, iconNode) => {
   Component.displayName = toPascalCase(iconName);
   return Component;
 };
-const __iconNode$b = [
+const __iconNode$d = [
   [
     "path",
     {
@@ -14462,31 +14462,42 @@ const __iconNode$b = [
   ["circle", { cx: "20", cy: "21", r: ".5", key: "yhc1fs" }],
   ["circle", { cx: "20", cy: "8", r: ".5", key: "1e43v0" }]
 ];
-const BrainCircuit = createLucideIcon("brain-circuit", __iconNode$b);
-const __iconNode$a = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
-const ChevronDown = createLucideIcon("chevron-down", __iconNode$a);
-const __iconNode$9 = [["path", { d: "m18 15-6-6-6 6", key: "153udz" }]];
-const ChevronUp = createLucideIcon("chevron-up", __iconNode$9);
-const __iconNode$8 = [
+const BrainCircuit = createLucideIcon("brain-circuit", __iconNode$d);
+const __iconNode$c = [
+  ["path", { d: "M12 18V5", key: "adv99a" }],
+  ["path", { d: "M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4", key: "1e3is1" }],
+  ["path", { d: "M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5", key: "1gqd8o" }],
+  ["path", { d: "M17.997 5.125a4 4 0 0 1 2.526 5.77", key: "iwvgf7" }],
+  ["path", { d: "M18 18a4 4 0 0 0 2-7.464", key: "efp6ie" }],
+  ["path", { d: "M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517", key: "1gq6am" }],
+  ["path", { d: "M6 18a4 4 0 0 1-2-7.464", key: "k1g0md" }],
+  ["path", { d: "M6.003 5.125a4 4 0 0 0-2.526 5.77", key: "q97ue3" }]
+];
+const Brain = createLucideIcon("brain", __iconNode$c);
+const __iconNode$b = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
+const ChevronDown = createLucideIcon("chevron-down", __iconNode$b);
+const __iconNode$a = [["path", { d: "m18 15-6-6-6 6", key: "153udz" }]];
+const ChevronUp = createLucideIcon("chevron-up", __iconNode$a);
+const __iconNode$9 = [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
   ["line", { x1: "12", x2: "12", y1: "8", y2: "12", key: "1pkeuh" }],
   ["line", { x1: "12", x2: "12.01", y1: "16", y2: "16", key: "4dfq90" }]
 ];
-const CircleAlert = createLucideIcon("circle-alert", __iconNode$8);
-const __iconNode$7 = [
+const CircleAlert = createLucideIcon("circle-alert", __iconNode$9);
+const __iconNode$8 = [
   ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
   ["path", { d: "M10 14 21 3", key: "gplh6r" }],
   ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
 ];
-const ExternalLink = createLucideIcon("external-link", __iconNode$7);
-const __iconNode$6 = [
+const ExternalLink = createLucideIcon("external-link", __iconNode$8);
+const __iconNode$7 = [
   ["rect", { width: "7", height: "7", x: "3", y: "3", rx: "1", key: "1g98yp" }],
   ["rect", { width: "7", height: "7", x: "14", y: "3", rx: "1", key: "6d4xhi" }],
   ["rect", { width: "7", height: "7", x: "14", y: "14", rx: "1", key: "nxv5o0" }],
   ["rect", { width: "7", height: "7", x: "3", y: "14", rx: "1", key: "1bb6yr" }]
 ];
-const LayoutGrid = createLucideIcon("layout-grid", __iconNode$6);
-const __iconNode$5 = [
+const LayoutGrid = createLucideIcon("layout-grid", __iconNode$7);
+const __iconNode$6 = [
   [
     "path",
     {
@@ -14495,13 +14506,20 @@ const __iconNode$5 = [
     }
   ]
 ];
-const MessageSquare = createLucideIcon("message-square", __iconNode$5);
-const __iconNode$4 = [
+const MessageSquare = createLucideIcon("message-square", __iconNode$6);
+const __iconNode$5 = [
   ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
   ["path", { d: "M15 3v18", key: "14nvp0" }],
   ["path", { d: "m8 9 3 3-3 3", key: "12hl5m" }]
 ];
-const PanelRightClose = createLucideIcon("panel-right-close", __iconNode$4);
+const PanelRightClose = createLucideIcon("panel-right-close", __iconNode$5);
+const __iconNode$4 = [
+  ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
+  ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
+  ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
+  ["path", { d: "M8 16H3v5", key: "1cv678" }]
+];
+const RefreshCw = createLucideIcon("refresh-cw", __iconNode$4);
 const __iconNode$3 = [
   ["path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8", key: "1357e3" }],
   ["path", { d: "M3 3v5h5", key: "1xhq8a" }]
@@ -14720,6 +14738,31 @@ class ExtensionBridge {
       return result;
     } catch (error) {
       console.error("Error sending chat message:", error);
+      throw error;
+    }
+  }
+  async getTrackedTopics(dueOnly = false) {
+    try {
+      await this.waitForReady();
+      const result = await this.sendMessage({
+        action: "getTrackedTopics",
+        dueOnly
+      });
+      if (!result.success) throw new Error(result.error || "Failed to get tracked topics");
+      return result.data;
+    } catch (error) {
+      console.error("Error getting tracked topics:", error);
+      throw error;
+    }
+  }
+  async recomputeTracking() {
+    try {
+      await this.waitForReady();
+      return await this.sendMessage({
+        action: "recomputeTracking"
+      });
+    } catch (error) {
+      console.error("Error recomputing tracking:", error);
       throw error;
     }
   }
@@ -25088,14 +25131,137 @@ function QuizView() {
     /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs font-medium text-accent bg-accent-subtle px-3 py-1.5 rounded-lg", children: "Coming soon" })
   ] });
 }
-function TrackingView() {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center h-full gap-5", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-5 rounded-2xl bg-accent-subtle", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingDown, { size: 40, strokeWidth: 1.2, className: "text-accent" }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center space-y-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-base font-semibold text-text", children: "Memory Tracking" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-text-tertiary max-w-md leading-relaxed", children: "Track explored topics and visualize the forgetting curve to review them at the optimal time." })
+const useTrackingStore = create$1((set, get) => ({
+  topics: [],
+  isLoading: false,
+  isRecomputing: false,
+  error: null,
+  showDueOnly: false,
+  loadTopics: async () => {
+    var _a;
+    try {
+      set({ isLoading: true, error: null });
+      await extensionBridge.waitForExtensionServices();
+      const response = await extensionBridge.getTrackedTopics(get().showDueOnly);
+      set({ topics: (_a = response.topics) != null ? _a : [], isLoading: false });
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : "Unknown error", isLoading: false });
+    }
+  },
+  toggleDueOnly: async () => {
+    set((state) => ({ showDueOnly: !state.showDueOnly }));
+    await get().loadTopics();
+  },
+  recompute: async () => {
+    try {
+      set({ isRecomputing: true, error: null });
+      await extensionBridge.recomputeTracking();
+      await get().loadTopics();
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : "Unknown error" });
+    } finally {
+      set({ isRecomputing: false });
+    }
+  }
+}));
+function TopicCard({ topic }) {
+  const now = /* @__PURE__ */ new Date();
+  const isDue = topic.next_review_at ? new Date(topic.next_review_at) <= now : false;
+  const score = Math.round(topic.forgetting_score * 100);
+  const scoreColor = score < 30 ? "bg-success" : score < 60 ? "bg-yellow-400" : "bg-error";
+  const formattedNextReview = topic.next_review_at ? new Date(topic.next_review_at).toLocaleDateString(void 0, { month: "short", day: "numeric" }) : null;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 rounded-xl bg-surface border border-line hover:border-line-strong transition-colors", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-3 mb-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-0.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-semibold text-text truncate", children: topic.name }),
+          isDue && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-xxs font-semibold text-error bg-error/10 px-2 py-0.5 rounded-full", children: "Due" })
+        ] }),
+        topic.description && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-text-tertiary line-clamp-2", children: topic.description })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "shrink-0 text-right", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold text-text", children: [
+          score,
+          "%"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary", children: "forgotten" })
+      ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs font-medium text-accent bg-accent-subtle px-3 py-1.5 rounded-lg", children: "Coming soon" })
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-1.5 rounded-full bg-surface-active overflow-hidden mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: `h-full rounded-full transition-all ${scoreColor}`,
+        style: { width: `${score}%` }
+      }
+    ) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between text-xxs text-text-tertiary", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+        topic.repetitions,
+        " review",
+        topic.repetitions !== 1 ? "s" : ""
+      ] }),
+      formattedNextReview && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: isDue ? "text-error font-medium" : "", children: [
+        "Next: ",
+        formattedNextReview
+      ] })
+    ] })
+  ] });
+}
+function TrackingView() {
+  const { topics, isLoading, isRecomputing, error, showDueOnly, loadTopics, toggleDueOnly, recompute } = useTrackingStore();
+  reactExports.useEffect(() => {
+    loadTopics();
+  }, []);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-line shrink-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Brain, { size: 16, className: "text-accent" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-sm font-semibold text-text", children: "Memory Tracking" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: toggleDueOnly,
+            className: `text-xxs font-medium px-3 py-1.5 rounded-lg transition-colors ${showDueOnly ? "bg-accent text-white" : "bg-surface text-text-secondary hover:bg-surface-hover"}`,
+            children: "Due only"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: recompute,
+            disabled: isRecomputing,
+            className: "flex items-center gap-1.5 text-xxs font-medium px-3 py-1.5 rounded-lg bg-surface text-text-secondary hover:bg-surface-hover transition-colors disabled:opacity-50",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 11, className: isRecomputing ? "animate-spin" : "" }),
+              "Recompute"
+            ]
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto thin-scrollbar px-5 py-4", children: isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center h-full gap-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 20, className: "text-accent animate-spin" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-text-tertiary", children: "Loading topics…" })
+    ] }) : error ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center h-full gap-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingDown, { size: 32, strokeWidth: 1.2, className: "text-error" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-error", children: error }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: loadTopics,
+          className: "text-xs text-accent hover:text-accent-hover transition-colors",
+          children: "Retry"
+        }
+      )
+    ] }) : topics.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center h-full gap-4 text-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-5 rounded-2xl bg-accent-subtle", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingDown, { size: 36, strokeWidth: 1.2, className: "text-accent" }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-text", children: showDueOnly ? "No topics due for review" : "No topics tracked yet" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-text-tertiary max-w-xs leading-relaxed", children: showDueOnly ? "All caught up! Come back later." : "Analyze a browsing session to start tracking learning topics." })
+      ] })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: topics.map((topic) => /* @__PURE__ */ jsxRuntimeExports.jsx(TopicCard, { topic }, topic.topic_id)) }) })
   ] });
 }
 function AppLayout() {

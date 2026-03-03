@@ -1,27 +1,18 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 
 from .config import settings
 from .monitoring import configure_logging, metrics
 from .middleware import RequestLoggingMiddleware
-from .services.clustering_service import ClusteringService
-from .services.llm_service import LLMService
-from .services.chat_service import ChatService
-from .services.user_service import UserService
-from .services.mapping_service import MappingService
-from .services.embedding_service import EmbeddingService
-from .services.google_auth_service import GoogleAuthService
-from .services.search_service import SearchService
-from .tools.search_tool import SearchHistoryTool
-from .tools.session_tools import ListSessionsTool
-from .tools.stats_tools import BrowsingStatsTool
-from .tools.registry import ToolRegistry
-from .models.session_models import HistorySession, SessionClusteringResponse
-from .models.user_models import AuthenticateRequest, AuthenticateResponse
-from .models.chat_models import ChatRequest, ChatResponse
-from .repositories.database_repository import DatabaseRepository
+from .core.container import build_container
+from .modules.assistant.api.router import build_router as build_assistant_router
+from .modules.identity.api.router import build_router as build_identity_router
+from .modules.learning_content.api.router import build_router as build_learning_router
+from .modules.recall_engine.api.router import build_router as build_recall_router
+from .modules.session_intelligence.api.router import build_router as build_session_router
+from .modules.outbox.api.router import build_router as build_outbox_router
 
 # Configure structured logging
 configure_logging(log_level=settings.log_level, use_json=settings.log_json_format)
@@ -46,23 +37,13 @@ app.add_middleware(
 # Add request logging middleware (runs after CORS)
 app.add_middleware(RequestLoggingMiddleware)
 
-# Initialize services
-db_repository = DatabaseRepository()
-mapping_service = MappingService(db_repository)
-embedding_service = EmbeddingService()
-clustering_service = ClusteringService(mapping_service=mapping_service, embedding_service=embedding_service)
-llm_service = LLMService()
-google_auth_service = GoogleAuthService()
-user_service = UserService(db_repository, google_auth_service)
-search_service = SearchService(db_repository, embedding_service)
+container = build_container()
 
-# Tools & registry
-search_tool = SearchHistoryTool(search_service)
-session_tool = ListSessionsTool(db_repository)
-stats_tool = BrowsingStatsTool(db_repository)
-tool_registry = ToolRegistry([search_tool, session_tool, stats_tool])
 
-chat_service = ChatService(llm_service, tool_registry, user_service)
+@app.on_event("startup")
+async def startup() -> None:
+    # Schema migrations are managed by Alembic.
+    return None
 
 @app.get("/")
 async def root():
@@ -100,93 +81,12 @@ async def get_metrics():
     """
     return metrics.get_summary()
 
-@app.post("/cluster-session", response_model=SessionClusteringResponse)
-async def cluster_session(session: HistorySession, force: bool = False):
-    """
-    Cluster a single browsing history session into thematic groups
-    
-    Args:
-        session: Single browsing history session to cluster (must include user_token)
-        
-    Returns:
-        SessionClusteringResponse with clusters for the session
-    """
-    try:
-        logger.info(f"📥 Received session {session.session_identifier} with {len(session.items)} items")
-        
-        if not session.items:
-            raise HTTPException(status_code=400, detail="Session has no items to cluster")
-        
-        # Validate token and get user (token is the source of truth)
-        if not session.user_token:
-            raise HTTPException(status_code=401, detail="Missing user_token")
-        
-        user_dict = await user_service.get_user_from_token(session.user_token)
-        if not user_dict:
-            raise HTTPException(status_code=401, detail="Invalid or expired token")
-        
-        user_id = user_dict["id"]
-        logger.info(f"👤 Authenticated user_id: {user_id}")
-        
-        if not force:
-            try:
-                gap_minutes = settings.current_session_gap_minutes
-            except Exception:
-                gap_minutes = 30
-            now = datetime.now(timezone.utc)
-            end_time = session.end_time
-            if end_time.tzinfo is None:
-                end_time = end_time.replace(tzinfo=timezone.utc)
-            is_current = (now - end_time) <= timedelta(minutes=gap_minutes)
-            force = is_current
-
-        # Process session through clustering service (handles caching and persistence)
-        session_result = await clustering_service.cluster_session(session, user_id, force=force)
-        
-        logger.info(f"Generated clustering result for session {session.session_identifier} with {len(session_result.clusters)} clusters")
-        return session_result
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error clustering session {getattr(session, 'session_identifier', 'unknown')}: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Clustering failed: {str(e)}")
-
-
-@app.post("/chat", response_model=ChatResponse)
-async def chat(request: ChatRequest):
-    try:
-        logger.info(f"Received chat message: {request.message[:50]}...")
-        
-        if not request.message.strip():
-            raise HTTPException(status_code=400, detail="Message cannot be empty")
-        
-        # Process message through chat service
-        response = await chat_service.process_message(request)
-        
-        logger.info(f"Chat response generated for conversation {response.conversation_id}")
-        return response
-        
-    except Exception as e:
-        logger.error(f"Error processing chat: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Chat failed: {str(e)}")
-
-
-@app.post("/authenticate", response_model=AuthenticateResponse)
-async def authenticate(request: AuthenticateRequest):
-    try:
-        logger.info("Received authenticate request")
-        user = await user_service.authenticate(request)
-        
-        if not user:
-            raise HTTPException(status_code=401, detail="Invalid or expired token")
-        
-        return user
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error authenticating: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Authentication failed: {str(e)}")
+app.include_router(build_session_router(container))
+app.include_router(build_assistant_router(container))
+app.include_router(build_identity_router(container))
+app.include_router(build_recall_router(container))
+app.include_router(build_learning_router(container))
+app.include_router(build_outbox_router(container))
 
 
 if __name__ == "__main__":

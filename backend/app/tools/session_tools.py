@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import List, Tuple
 
 from app.models.tool_models import ToolDefinition
-from app.repositories.database_repository import DatabaseRepository
+from app.modules.session_intelligence.application.browsing_query_use_case import BrowsingQueryUseCase
 from .base import BaseTool
 
 logger = logging.getLogger(__name__)
@@ -39,8 +39,8 @@ class ListSessionsTool(BaseTool):
         },
     )
 
-    def __init__(self, db_repository: DatabaseRepository):
-        self.db_repository = db_repository
+    def __init__(self, browsing_query_use_case: BrowsingQueryUseCase):
+        self.browsing_query_use_case = browsing_query_use_case
 
     @property
     def definition(self) -> ToolDefinition:
@@ -55,7 +55,7 @@ class ListSessionsTool(BaseTool):
         if date_to and date_to.hour == 0 and date_to.minute == 0 and date_to.second == 0:
             date_to = date_to.replace(hour=23, minute=59, second=59)
 
-        sessions = self.db_repository.get_sessions_by_user(
+        sessions = self.browsing_query_use_case.list_sessions(
             user_id=user_id,
             limit=limit,
             date_from=date_from,

@@ -6,14 +6,18 @@ class Config {
                 'cluster-session': '/cluster-session',
                 'chat': '/chat',
                 'authenticate': '/authenticate',
-                'health': '/health'
+                'health': '/health',
+                'tracking-topics': '/tracking/topics',
+                'tracking-recompute': '/tracking/recompute'
             },
             production: {
                 baseUrl: 'https://your-production-api.com',
                 'cluster-session': '/cluster-session',
                 'chat': '/chat',
                 'authenticate': '/authenticate',
-                'health': '/health'
+                'health': '/health',
+                'tracking-topics': '/tracking/topics',
+                'tracking-recompute': '/tracking/recompute'
             }
         };
         

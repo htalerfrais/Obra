@@ -2,7 +2,7 @@ import logging
 from typing import List, Tuple
 
 from app.models.tool_models import ToolDefinition
-from app.repositories.database_repository import DatabaseRepository
+from app.modules.session_intelligence.application.browsing_query_use_case import BrowsingQueryUseCase
 from .base import BaseTool
 
 logger = logging.getLogger(__name__)
@@ -31,8 +31,8 @@ class BrowsingStatsTool(BaseTool):
         },
     )
 
-    def __init__(self, db_repository: DatabaseRepository):
-        self.db_repository = db_repository
+    def __init__(self, browsing_query_use_case: BrowsingQueryUseCase):
+        self.browsing_query_use_case = browsing_query_use_case
 
     @property
     def definition(self) -> ToolDefinition:
@@ -41,8 +41,9 @@ class BrowsingStatsTool(BaseTool):
     async def execute(self, user_id: int, arguments: dict) -> Tuple[str, List[dict]]:
         top_domains_limit = arguments.get("top_domains_limit", 10)
 
-        stats = self.db_repository.get_user_browsing_stats(user_id)
-        top_domains = self.db_repository.get_top_domains(user_id, limit=top_domains_limit)
+        result = self.browsing_query_use_case.get_stats(user_id, top_domains_limit=top_domains_limit)
+        stats = result.get("stats")
+        top_domains = result.get("top_domains", [])
 
         if not stats:
             return "Could not retrieve browsing statistics.", []

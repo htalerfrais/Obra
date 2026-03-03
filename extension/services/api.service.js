@@ -176,6 +176,20 @@ class ApiService {
 
 
 
+    async getTrackedTopics(userToken, dueOnly = false) {
+        return this.makeRequest('tracking-topics', {
+            query: { user_token: userToken, due_only: dueOnly }
+        });
+    }
+
+    async recomputeTracking(userToken) {
+        return this.makeRequest('tracking-recompute', {
+            method: 'POST',
+            body: JSON.stringify({}),
+            query: { user_token: userToken }
+        });
+    }
+
     /**
      * Send chat message
      * @param {string} message - User message
