@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional
 
-from app.models.recall_models import TopicTrackingItem
+from app.models.recall_models import TopicTrackingItem, RecallHistoryEvent, TopicHistoryResponse
 from app.repositories.session_repository import SessionRepository
 from app.repositories.topic_repository import TopicRepository
 
@@ -98,12 +98,19 @@ class RecallService:
 
             item_count = len(cluster.get("items", []))
             importance = min(1.0, 0.3 + (item_count / 20.0))
-            # cluster_id FK is nullable; we don't have the DB cluster row id from model_dump()
-            self.topic_repository.add_observation(topic_id, session_id, observed_at, importance)
+            cluster_db_id = cluster.get("id")
+            self.topic_repository.add_observation(topic_id, session_id, observed_at, importance, cluster_id=cluster_db_id)
 
             current_state = existing_topics.get(topic_id, {}).get("recall_state") or {}
             self._strengthen_recall(topic_id, current_state, observed_at)
-            self.topic_repository.create_recall_event(topic_id, "observed", {"session_identifier": session_identifier})
+
+            # Snapshot strength post-reinforcement so history can reconstruct the curve
+            post_strength = min(1.0, float(current_state.get("strength", 0.5)) + 0.08)
+            self.topic_repository.create_recall_event(topic_id, "observed", {
+                "session_identifier": session_identifier,
+                "strength": post_strength,
+                "forgetting_score": 0.0,
+            })
 
     def list_topics(self, user_id: int, due_only: bool = False) -> List[TopicTrackingItem]:
         now = datetime.utcnow()
@@ -124,6 +131,7 @@ class RecallService:
                     strength=float(state.get("strength", 0.5)),
                     repetitions=int(state.get("repetitions", 0)),
                     next_review_at=state.get("next_review_at"),
+                    last_reviewed_at=state.get("last_reviewed_at"),
                 )
             )
         return result
@@ -158,3 +166,18 @@ class RecallService:
             )
             updated += 1
         return updated
+
+    def get_topic_history(self, topic_id: int) -> TopicHistoryResponse:
+        events = self.topic_repository.get_recall_events(topic_id)
+        history: List[RecallHistoryEvent] = []
+        for e in events:
+            payload = e.get("payload") or {}
+            strength = float(payload.get("strength", 0.5))
+            forgetting_score = float(payload.get("forgetting_score", 0.0))
+            history.append(RecallHistoryEvent(
+                event_time=e["event_time"],
+                event_type=e["event_type"],
+                strength=strength,
+                forgetting_score=forgetting_score,
+            ))
+        return TopicHistoryResponse(topic_id=topic_id, events=history)

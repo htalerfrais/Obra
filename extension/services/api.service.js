@@ -4,9 +4,12 @@ class ApiService {
         this.authService = authService;
     }
     
-    async makeRequest(endpoint, options = {}) {
+    async makeRequest(endpointOrPath, options = {}) {
         const query = options.query || null;
-        const urlBase = this.config.getEndpointUrl(endpoint);
+        // Accept either a config key (e.g. 'tracking-topics') or a raw path (e.g. '/tracking/topics/1/history')
+        const urlBase = endpointOrPath.startsWith('/')
+            ? `${this.config.getApiBaseUrl()}${endpointOrPath}`
+            : this.config.getEndpointUrl(endpointOrPath);
         const url = query ? `${urlBase}?${new URLSearchParams(query).toString()}` : urlBase;
         const headers = this.config.getRequestHeaders();
         
@@ -179,6 +182,12 @@ class ApiService {
     async getTrackedTopics(userToken, dueOnly = false) {
         return this.makeRequest('tracking-topics', {
             query: { user_token: userToken, due_only: dueOnly }
+        });
+    }
+
+    async getTopicHistory(userToken, topicId) {
+        return this.makeRequest(`/tracking/topics/${topicId}/history`, {
+            query: { user_token: userToken }
         });
     }
 

@@ -12,6 +12,7 @@ class TopicTrackingItem(BaseModel):
     strength: float = 0.5
     repetitions: int = 0
     next_review_at: Optional[datetime] = None
+    last_reviewed_at: Optional[datetime] = None
 
 
 class TopicTrackingResponse(BaseModel):
@@ -20,3 +21,15 @@ class TopicTrackingResponse(BaseModel):
 
 class RecomputeRecallRequest(BaseModel):
     topic_id: Optional[int] = None
+
+
+class RecallHistoryEvent(BaseModel):
+    event_time: datetime
+    event_type: str
+    strength: float
+    forgetting_score: float
+
+
+class TopicHistoryResponse(BaseModel):
+    topic_id: int
+    events: List[RecallHistoryEvent]

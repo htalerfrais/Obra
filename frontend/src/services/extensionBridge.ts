@@ -1,6 +1,6 @@
 /// <reference types="chrome"/>
 
-import type { TopicTrackingResponse } from '../types/tracking';
+import type { TopicTrackingResponse, TopicHistoryResponse } from '../types/tracking';
 
 declare global {
   interface Window {
@@ -192,6 +192,21 @@ class ExtensionBridge {
       return result.data as TopicTrackingResponse;
     } catch (error) {
       console.error('Error getting tracked topics:', error);
+      throw error;
+    }
+  }
+
+  async getTopicHistory(topicId: number): Promise<TopicHistoryResponse> {
+    try {
+      await this.waitForReady();
+      const result = await this.sendMessage<{ success: boolean; data?: TopicHistoryResponse; error?: string }>({
+        action: 'getTopicHistory',
+        topicId,
+      });
+      if (!result.success) throw new Error((result as any).error || 'Failed to get topic history');
+      return result.data as TopicHistoryResponse;
+    } catch (error) {
+      console.error('Error getting topic history:', error);
       throw error;
     }
   }

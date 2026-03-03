@@ -14755,6 +14755,20 @@ class ExtensionBridge {
       throw error;
     }
   }
+  async getTopicHistory(topicId) {
+    try {
+      await this.waitForReady();
+      const result = await this.sendMessage({
+        action: "getTopicHistory",
+        topicId
+      });
+      if (!result.success) throw new Error(result.error || "Failed to get topic history");
+      return result.data;
+    } catch (error) {
+      console.error("Error getting topic history:", error);
+      throw error;
+    }
+  }
   async recomputeTracking() {
     try {
       await this.waitForReady();
@@ -25137,6 +25151,9 @@ const useTrackingStore = create$1((set, get) => ({
   isRecomputing: false,
   error: null,
   showDueOnly: false,
+  topicHistories: {},
+  loadingHistories: /* @__PURE__ */ new Set(),
+  selectedTopicId: null,
   loadTopics: async () => {
     var _a;
     try {
@@ -25162,56 +25179,279 @@ const useTrackingStore = create$1((set, get) => ({
     } finally {
       set({ isRecomputing: false });
     }
+  },
+  loadTopicHistory: async (topicId) => {
+    if (get().loadingHistories.has(topicId)) return;
+    set((state) => ({ loadingHistories: /* @__PURE__ */ new Set([...state.loadingHistories, topicId]) }));
+    try {
+      const response = await extensionBridge.getTopicHistory(topicId);
+      set((state) => ({
+        topicHistories: __spreadProps(__spreadValues({}, state.topicHistories), { [topicId]: response.events }),
+        loadingHistories: new Set([...state.loadingHistories].filter((id) => id !== topicId))
+      }));
+    } catch (e) {
+      set((state) => ({
+        loadingHistories: new Set([...state.loadingHistories].filter((id) => id !== topicId))
+      }));
+    }
+  },
+  selectTopic: (topicId) => {
+    set({ selectedTopicId: topicId });
   }
 }));
-function TopicCard({ topic }) {
-  const now = /* @__PURE__ */ new Date();
-  const isDue = topic.next_review_at ? new Date(topic.next_review_at) <= now : false;
+const TOPIC_COLORS = [
+  "#6366f1",
+  "#ec4899",
+  "#f97316",
+  "#14b8a6",
+  "#84cc16",
+  "#eab308",
+  "#06b6d4",
+  "#a855f7"
+];
+function computeCurve(events, now, minTime, maxTime, chartW, chartH) {
+  if (events.length === 0) return [];
+  const timeRange = maxTime - minTime || 1;
+  const toX = (d) => (d.getTime() - minTime) / timeRange * chartW;
+  const toY = (v) => chartH - v * chartH;
+  const points = [];
+  for (let i = 0; i < events.length; i++) {
+    const recallTime = new Date(events[i].event_time);
+    const nextTime = events[i + 1] ? new Date(events[i + 1].event_time) : now;
+    const strength = events[i].strength;
+    const segmentMs = nextTime.getTime() - recallTime.getTime();
+    const steps = Math.max(2, Math.min(60, Math.ceil(segmentMs / (6 * 3600 * 1e3))));
+    for (let s = 0; s <= steps; s++) {
+      const t = new Date(recallTime.getTime() + segmentMs * s / steps);
+      const daysSince = (t.getTime() - recallTime.getTime()) / 864e5;
+      const score = Math.min(1, daysSince / (14 * Math.max(0.1, strength)));
+      points.push({ x: toX(t), y: toY(score) });
+    }
+  }
+  return points;
+}
+function TopicPill({
+  topic,
+  color: color2,
+  isSelected,
+  onClick
+}) {
   const score = Math.round(topic.forgetting_score * 100);
-  const scoreColor = score < 30 ? "bg-success" : score < 60 ? "bg-yellow-400" : "bg-error";
-  const formattedNextReview = topic.next_review_at ? new Date(topic.next_review_at).toLocaleDateString(void 0, { month: "short", day: "numeric" }) : null;
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 rounded-xl bg-surface border border-line hover:border-line-strong transition-colors", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-3 mb-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-0.5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-semibold text-text truncate", children: topic.name }),
-          isDue && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-xxs font-semibold text-error bg-error/10 px-2 py-0.5 rounded-full", children: "Due" })
-        ] }),
-        topic.description && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-text-tertiary line-clamp-2", children: topic.description })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "shrink-0 text-right", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold text-text", children: [
-          score,
-          "%"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary", children: "forgotten" })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-1.5 rounded-full bg-surface-active overflow-hidden mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: `h-full rounded-full transition-all ${scoreColor}`,
-        style: { width: `${score}%` }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "button",
+    {
+      onClick,
+      className: `w-full text-left px-3 py-2 rounded-lg transition-colors flex items-center gap-2 ${isSelected ? "bg-accent/15 border border-accent/40" : "hover:bg-surface-hover border border-transparent"}`,
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 w-2.5 h-2.5 rounded-full", style: { backgroundColor: color2 } }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex-1 min-w-0", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-xs font-medium text-text truncate", children: topic.name }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "block text-xxs text-text-tertiary", children: [
+            score,
+            "% forgotten"
+          ] })
+        ] })
+      ]
+    }
+  );
+}
+const CHART_W = 260;
+const CHART_H = 140;
+const PAD = { top: 8, right: 8, bottom: 28, left: 28 };
+function ForgettingChart({
+  topics,
+  histories,
+  selectedTopicId
+}) {
+  const now = /* @__PURE__ */ new Date();
+  const { minTime, maxTime } = reactExports.useMemo(() => {
+    let min = now.getTime();
+    let max = now.getTime();
+    for (const topic of topics) {
+      const events = histories[topic.topic_id];
+      if (events && events.length > 0) {
+        const first = new Date(events[0].event_time).getTime();
+        if (first < min) min = first;
+      } else if (topic.last_reviewed_at) {
+        const t = new Date(topic.last_reviewed_at).getTime();
+        if (t < min) min = t;
       }
-    ) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between text-xxs text-text-tertiary", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-        topic.repetitions,
-        " review",
-        topic.repetitions !== 1 ? "s" : ""
-      ] }),
-      formattedNextReview && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: isDue ? "text-error font-medium" : "", children: [
-        "Next: ",
-        formattedNextReview
-      ] })
-    ] })
-  ] });
+    }
+    const fourteenDaysMs = 14 * 24 * 3600 * 1e3;
+    if (max - min < fourteenDaysMs) min = max - fourteenDaysMs;
+    return { minTime: min, maxTime: max };
+  }, [topics, histories]);
+  const timeRange = maxTime - minTime || 1;
+  const toX = (d) => PAD.left + (d.getTime() - minTime) / timeRange * CHART_W;
+  const toY = (v) => PAD.top + (1 - v) * CHART_H;
+  const xTicks = reactExports.useMemo(() => {
+    const ticks = [];
+    const totalDays = (maxTime - minTime) / 864e5;
+    const tickCount = Math.min(5, Math.max(2, Math.floor(totalDays / 2)));
+    for (let i = 0; i <= tickCount; i++) {
+      const t = new Date(minTime + i / tickCount * (maxTime - minTime));
+      ticks.push({ x: toX(t), label: t.toLocaleDateString(void 0, { month: "short", day: "numeric" }) });
+    }
+    return ticks;
+  }, [minTime, maxTime]);
+  const svgW = CHART_W + PAD.left + PAD.right;
+  const svgH = CHART_H + PAD.top + PAD.bottom;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "svg",
+    {
+      viewBox: `0 0 ${svgW} ${svgH}`,
+      className: "w-full h-full",
+      style: { maxHeight: "100%" },
+      children: [
+        [0, 0.25, 0.5, 0.75, 1].map((v) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "line",
+          {
+            x1: PAD.left,
+            x2: PAD.left + CHART_W,
+            y1: toY(v),
+            y2: toY(v),
+            stroke: "currentColor",
+            strokeOpacity: 0.08,
+            strokeWidth: 1
+          },
+          v
+        )),
+        [0, 0.5, 1].map((v) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "text",
+          {
+            x: PAD.left - 4,
+            y: toY(v) + 3,
+            fontSize: 7,
+            textAnchor: "end",
+            fill: "currentColor",
+            opacity: 0.4,
+            children: [
+              Math.round(v * 100),
+              "%"
+            ]
+          },
+          v
+        )),
+        xTicks.map((tick, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "text",
+          {
+            x: tick.x,
+            y: PAD.top + CHART_H + 16,
+            fontSize: 7,
+            textAnchor: "middle",
+            fill: "currentColor",
+            opacity: 0.4,
+            children: tick.label
+          },
+          i
+        )),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "line",
+          {
+            x1: PAD.left,
+            x2: PAD.left + CHART_W,
+            y1: PAD.top + CHART_H,
+            y2: PAD.top + CHART_H,
+            stroke: "currentColor",
+            strokeOpacity: 0.2,
+            strokeWidth: 1
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "line",
+          {
+            x1: PAD.left,
+            x2: PAD.left,
+            y1: PAD.top,
+            y2: PAD.top + CHART_H,
+            stroke: "currentColor",
+            strokeOpacity: 0.2,
+            strokeWidth: 1
+          }
+        ),
+        topics.map((topic, idx) => {
+          const color2 = TOPIC_COLORS[idx % TOPIC_COLORS.length];
+          const events = histories[topic.topic_id];
+          const isSelected = topic.topic_id === selectedTopicId;
+          const opacity = selectedTopicId === null ? 1 : isSelected ? 1 : 0.18;
+          let polylinePoints = "";
+          let dotX = null;
+          let dotY = null;
+          if (events && events.length > 0) {
+            const pts = computeCurve(events, now, minTime, maxTime, CHART_W, CHART_H);
+            polylinePoints = pts.map((p) => `${(p.x + PAD.left).toFixed(1)},${(p.y + PAD.top).toFixed(1)}`).join(" ");
+            const last = pts[pts.length - 1];
+            if (last) {
+              dotX = last.x + PAD.left;
+              dotY = last.y + PAD.top;
+            }
+          } else if (topic.last_reviewed_at) {
+            const recallDate = new Date(topic.last_reviewed_at);
+            const days = (now.getTime() - recallDate.getTime()) / 864e5;
+            const score = Math.min(1, days / (14 * Math.max(0.1, topic.strength)));
+            const x0 = toX(recallDate);
+            const x1 = toX(now);
+            const y0 = toY(0);
+            const y1 = toY(score);
+            polylinePoints = `${x0.toFixed(1)},${y0.toFixed(1)} ${x1.toFixed(1)},${y1.toFixed(1)}`;
+            dotX = x1;
+            dotY = y1;
+          }
+          if (!polylinePoints) return null;
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { opacity, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "polyline",
+              {
+                points: polylinePoints,
+                fill: "none",
+                stroke: color2,
+                strokeWidth: isSelected ? 2 : 1.5,
+                strokeLinejoin: "round",
+                strokeLinecap: "round"
+              }
+            ),
+            dotX !== null && dotY !== null && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "circle",
+              {
+                cx: dotX,
+                cy: dotY,
+                r: isSelected ? 4.5 : 3,
+                fill: color2,
+                stroke: "white",
+                strokeWidth: 1
+              }
+            )
+          ] }, topic.topic_id);
+        })
+      ]
+    }
+  );
 }
 function TrackingView() {
-  const { topics, isLoading, isRecomputing, error, showDueOnly, loadTopics, toggleDueOnly, recompute } = useTrackingStore();
+  const {
+    topics,
+    isLoading,
+    isRecomputing,
+    error,
+    showDueOnly,
+    topicHistories,
+    selectedTopicId,
+    loadTopics,
+    toggleDueOnly,
+    recompute,
+    loadTopicHistory,
+    selectTopic
+  } = useTrackingStore();
   reactExports.useEffect(() => {
     loadTopics();
   }, []);
+  reactExports.useEffect(() => {
+    for (const topic of topics) {
+      if (!(topic.topic_id in topicHistories)) {
+        loadTopicHistory(topic.topic_id);
+      }
+    }
+  }, [topics]);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-line shrink-0", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
@@ -25241,27 +25481,86 @@ function TrackingView() {
         )
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto thin-scrollbar px-5 py-4", children: isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center h-full gap-3", children: [
+    isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center flex-1 gap-3", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 20, className: "text-accent animate-spin" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-text-tertiary", children: "Loading topics…" })
-    ] }) : error ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center h-full gap-3", children: [
+    ] }) : error ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center flex-1 gap-3", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingDown, { size: 32, strokeWidth: 1.2, className: "text-error" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-error", children: error }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          onClick: loadTopics,
-          className: "text-xs text-accent hover:text-accent-hover transition-colors",
-          children: "Retry"
-        }
-      )
-    ] }) : topics.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center h-full gap-4 text-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: loadTopics, className: "text-xs text-accent hover:text-accent-hover transition-colors", children: "Retry" })
+    ] }) : topics.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center flex-1 gap-4 text-center", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-5 rounded-2xl bg-accent-subtle", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingDown, { size: 36, strokeWidth: 1.2, className: "text-accent" }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-text", children: showDueOnly ? "No topics due for review" : "No topics tracked yet" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-text-tertiary max-w-xs leading-relaxed", children: showDueOnly ? "All caught up! Come back later." : "Analyze a browsing session to start tracking learning topics." })
       ] })
-    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: topics.map((topic) => /* @__PURE__ */ jsxRuntimeExports.jsx(TopicCard, { topic }, topic.topic_id)) }) })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-1 min-h-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-36 shrink-0 border-r border-line overflow-y-auto thin-scrollbar p-2 flex flex-col gap-0.5", children: topics.map((topic, idx) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+        TopicPill,
+        {
+          topic,
+          color: TOPIC_COLORS[idx % TOPIC_COLORS.length],
+          isSelected: topic.topic_id === selectedTopicId,
+          onClick: () => selectTopic(topic.topic_id === selectedTopicId ? null : topic.topic_id)
+        },
+        topic.topic_id
+      )) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0 flex flex-col p-3 gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs text-text-tertiary", children: "Forgetting score over time" }),
+          selectedTopicId !== null && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => selectTopic(null),
+              className: "text-xxs text-text-tertiary hover:text-text transition-colors",
+              children: "Show all"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 min-h-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          ForgettingChart,
+          {
+            topics,
+            histories: topicHistories,
+            selectedTopicId
+          }
+        ) }),
+        selectedTopicId !== null && (() => {
+          const idx = topics.findIndex((t) => t.topic_id === selectedTopicId);
+          const topic = topics[idx];
+          if (!topic) return null;
+          const color2 = TOPIC_COLORS[idx % TOPIC_COLORS.length];
+          const isDue = topic.next_review_at ? new Date(topic.next_review_at) <= /* @__PURE__ */ new Date() : false;
+          const score = Math.round(topic.forgetting_score * 100);
+          const lastSeen = topic.last_reviewed_at ? new Date(topic.last_reviewed_at).toLocaleDateString(void 0, { month: "short", day: "numeric" }) : null;
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-xl bg-surface border border-line p-3 shrink-0", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 rounded-full shrink-0", style: { backgroundColor: color2 } }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-text truncate", children: topic.name }),
+              isDue && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-xxs font-semibold text-error bg-error/10 px-2 py-0.5 rounded-full", children: "Due" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4 text-xxs text-text-tertiary", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-medium text-text", children: [
+                  score,
+                  "%"
+                ] }),
+                " forgotten"
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-medium text-text", children: topic.repetitions }),
+                " review",
+                topic.repetitions !== 1 ? "s" : ""
+              ] }),
+              lastSeen && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                "Last seen ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-medium text-text", children: lastSeen })
+              ] })
+            ] })
+          ] });
+        })()
+      ] })
+    ] })
   ] });
 }
 function AppLayout() {

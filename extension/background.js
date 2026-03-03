@@ -132,6 +132,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     sendResponse(recomputeResult);
                     break;
                 }
+
+                case 'getTopicHistory': {
+                    const token = await self.Services.authService.getToken();
+                    const historyResult = await apiService.getTopicHistory(token, request.topicId);
+                    sendResponse(historyResult);
+                    break;
+                }
                     
                 default:
                     sendResponse({ error: 'Unknown action' });

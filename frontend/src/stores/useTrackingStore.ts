@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { extensionBridge } from '../services/extensionBridge';
-import type { TopicTrackingItem } from '../types/tracking';
+import type { TopicTrackingItem, RecallHistoryEvent } from '../types/tracking';
 
 interface TrackingStore {
   topics: TopicTrackingItem[];
@@ -8,10 +8,15 @@ interface TrackingStore {
   isRecomputing: boolean;
   error: string | null;
   showDueOnly: boolean;
+  topicHistories: Record<number, RecallHistoryEvent[]>;
+  loadingHistories: Set<number>;
+  selectedTopicId: number | null;
 
   loadTopics: () => Promise<void>;
   toggleDueOnly: () => Promise<void>;
   recompute: () => Promise<void>;
+  loadTopicHistory: (topicId: number) => Promise<void>;
+  selectTopic: (topicId: number | null) => void;
 }
 
 export const useTrackingStore = create<TrackingStore>((set, get) => ({
@@ -20,6 +25,9 @@ export const useTrackingStore = create<TrackingStore>((set, get) => ({
   isRecomputing: false,
   error: null,
   showDueOnly: false,
+  topicHistories: {},
+  loadingHistories: new Set(),
+  selectedTopicId: null,
 
   loadTopics: async () => {
     try {
@@ -47,5 +55,25 @@ export const useTrackingStore = create<TrackingStore>((set, get) => ({
     } finally {
       set({ isRecomputing: false });
     }
+  },
+
+  loadTopicHistory: async (topicId: number) => {
+    if (get().loadingHistories.has(topicId)) return;
+    set((state) => ({ loadingHistories: new Set([...state.loadingHistories, topicId]) }));
+    try {
+      const response = await extensionBridge.getTopicHistory(topicId);
+      set((state) => ({
+        topicHistories: { ...state.topicHistories, [topicId]: response.events },
+        loadingHistories: new Set([...state.loadingHistories].filter((id) => id !== topicId)),
+      }));
+    } catch {
+      set((state) => ({
+        loadingHistories: new Set([...state.loadingHistories].filter((id) => id !== topicId)),
+      }));
+    }
+  },
+
+  selectTopic: (topicId: number | null) => {
+    set({ selectedTopicId: topicId });
   },
 }));

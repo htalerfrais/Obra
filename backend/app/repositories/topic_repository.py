@@ -99,6 +99,19 @@ class TopicRepository(BaseRepository):
 
         return self._execute(operation, "Failed to upsert recall state")
 
+    def get_recall_events(self, topic_id: int) -> List[Dict]:
+        def operation(db):
+            rows = (
+                db.query(RecallEvent)
+                .filter(RecallEvent.topic_id == topic_id)
+                .order_by(RecallEvent.event_time.asc())
+                .all()
+            )
+            return [self._to_dict(row) for row in rows]
+
+        result = self._execute(operation, "Failed to get recall events")
+        return result if isinstance(result, list) else []
+
     def create_recall_event(self, topic_id: int, event_type: str, payload: Optional[dict] = None) -> Optional[Dict]:
         def operation(db):
             event = RecallEvent(topic_id=topic_id, event_type=event_type, payload=payload)
