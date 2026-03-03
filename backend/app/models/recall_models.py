@@ -28,6 +28,7 @@ class RecallHistoryEvent(BaseModel):
     event_type: str
     strength: float
     forgetting_score: float
+    session_identifier: Optional[str] = None
 
 
 class TopicHistoryResponse(BaseModel):

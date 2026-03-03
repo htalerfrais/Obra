@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
-import { RefreshCw, Brain, TrendingDown, ChevronDown } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { RefreshCw, Brain, TrendingDown, ChevronDown, ExternalLink } from 'lucide-react'
 import { useTrackingStore } from '../../stores/useTrackingStore'
+import { useSessionStore } from '../../stores/useSessionStore'
 import type { TopicTrackingItem, RecallHistoryEvent } from '../../types/tracking'
 
 const TOPIC_COLORS = [
@@ -37,12 +39,22 @@ function StrengthDots({ strength }: { strength: number }) {
 }
 
 function EventTimeline({ events, color }: { events: RecallHistoryEvent[]; color: string }) {
+  const navigate = useNavigate()
+  const setActiveSession = useSessionStore((s) => s.setActiveSession)
+
   if (events.length === 0) {
     return <p className="text-xxs text-text-tertiary italic">No recall events yet.</p>
   }
+
   const sorted = [...events].sort(
     (a, b) => new Date(b.event_time).getTime() - new Date(a.event_time).getTime()
   )
+
+  async function goToSession(sessionIdentifier: string) {
+    await setActiveSession(sessionIdentifier)
+    navigate('/sessions')
+  }
+
   return (
     <div className="flex flex-col gap-2">
       {sorted.map((e, i) => {
@@ -50,13 +62,25 @@ function EventTimeline({ events, color }: { events: RecallHistoryEvent[]; color:
         const date = new Date(e.event_time).toLocaleDateString(undefined, {
           month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
         })
+        const isObserved = e.event_type === 'observed' && !!e.session_identifier
+
         return (
-          <div key={i} className="flex items-start gap-2">
+          <div key={i} className="flex items-start gap-2 group">
             <span className="mt-0.5 w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: color }} />
-            <div className="min-w-0">
+            <div className="min-w-0 flex items-center gap-1.5 flex-wrap">
               <span className="text-xxs font-medium text-text capitalize">{e.event_type}</span>
-              <span className="text-xxs text-text-tertiary"> · {date}</span>
-              <span className="text-xxs text-text-tertiary"> · {ret}% retained</span>
+              <span className="text-xxs text-text-tertiary">· {date}</span>
+              <span className="text-xxs text-text-tertiary">· {ret}% retained</span>
+              {isObserved && (
+                <button
+                  onClick={() => goToSession(e.session_identifier!)}
+                  className="flex items-center gap-0.5 text-xxs text-accent hover:text-accent-hover transition-colors opacity-0 group-hover:opacity-100"
+                  title="Open session"
+                >
+                  <ExternalLink size={9} />
+                  <span>View session</span>
+                </button>
+              )}
             </div>
           </div>
         )
@@ -111,8 +135,8 @@ function TopicRow({
         {/* Retention bar */}
         <div className="w-16 h-1 bg-surface-active rounded-full overflow-hidden shrink-0">
           <div
-            className="h-full rounded-full transition-all"
-            style={{ width: `${pct}%`, backgroundColor: color, opacity: 0.85 }}
+            className="h-full rounded-full transition-all bg-accent/85"
+            style={{ width: `${pct}%` }}
           />
         </div>
 
@@ -270,7 +294,7 @@ export default function TrackingView() {
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto thin-scrollbar">
-          {sorted.map((topic, idx) => {
+          {sorted.map((topic) => {
             // Use original index for stable color
             const colorIdx = topics.findIndex((t) => t.topic_id === topic.topic_id)
             return (

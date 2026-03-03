@@ -25209,257 +25209,161 @@ const TOPIC_COLORS = [
   "#06b6d4",
   "#a855f7"
 ];
-const PX_PER_DAY = 70;
-const CHART_H = 140;
-const PAD = { top: 8, right: 16, bottom: 28, left: 30 };
-function retention(daysSince, strength) {
-  return 1 - Math.min(1, daysSince / (14 * Math.max(0.1, strength)));
+function daysAgo(dateStr) {
+  const diff = (Date.now() - new Date(dateStr).getTime()) / 864e5;
+  if (diff < 1) return "today";
+  if (diff < 2) return "1d ago";
+  return `${Math.floor(diff)}d ago`;
 }
-function computeCurve(events, now, minTime, chartW, totalMs) {
-  if (events.length === 0) return [];
-  const toX = (d) => (d.getTime() - minTime) / totalMs * chartW;
-  const toY = (v) => CHART_H - v * CHART_H;
-  const points = [];
-  for (let i = 0; i < events.length; i++) {
-    const recallTime = new Date(events[i].event_time);
-    const nextTime = events[i + 1] ? new Date(events[i + 1].event_time) : now;
-    const strength = events[i].strength;
-    const segmentMs = nextTime.getTime() - recallTime.getTime();
-    const steps = Math.max(2, Math.min(80, Math.ceil(segmentMs / (6 * 3600 * 1e3))));
-    for (let s = 0; s <= steps; s++) {
-      const t = new Date(recallTime.getTime() + segmentMs * s / steps);
-      const daysSince = (t.getTime() - recallTime.getTime()) / 864e5;
-      points.push({ x: toX(t), y: toY(retention(daysSince, strength)) });
-    }
+function retentionLabel(forgettingScore) {
+  const pct = Math.round((1 - forgettingScore) * 100);
+  if (pct >= 70) return { pct, label: "Healthy", cls: "text-success" };
+  if (pct >= 40) return { pct, label: "At risk", cls: "text-yellow-500" };
+  return { pct, label: "Critical", cls: "text-error" };
+}
+function StrengthDots({ strength }) {
+  const filled = Math.round(strength * 5);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex items-center gap-0.5", children: Array.from({ length: 5 }).map((_, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "span",
+    {
+      className: `w-1.5 h-1.5 rounded-full ${i < filled ? "bg-text-secondary" : "bg-surface-active"}`
+    },
+    i
+  )) });
+}
+function EventTimeline({ events, color: color2 }) {
+  const navigate = useNavigate();
+  const setActiveSession = useSessionStore((s) => s.setActiveSession);
+  if (events.length === 0) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary italic", children: "No recall events yet." });
   }
-  return points;
+  const sorted = [...events].sort(
+    (a, b) => new Date(b.event_time).getTime() - new Date(a.event_time).getTime()
+  );
+  async function goToSession(sessionIdentifier) {
+    await setActiveSession(sessionIdentifier);
+    navigate("/sessions");
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-2", children: sorted.map((e, i) => {
+    const ret = Math.round((1 - e.forgetting_score) * 100);
+    const date = new Date(e.event_time).toLocaleDateString(void 0, {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+    const isObserved = e.event_type === "observed" && !!e.session_identifier;
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-2 group", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mt-0.5 w-1.5 h-1.5 rounded-full shrink-0", style: { backgroundColor: color2 } }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 flex items-center gap-1.5 flex-wrap", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs font-medium text-text capitalize", children: e.event_type }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xxs text-text-tertiary", children: [
+          "· ",
+          date
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xxs text-text-tertiary", children: [
+          "· ",
+          ret,
+          "% retained"
+        ] }),
+        isObserved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => goToSession(e.session_identifier),
+            className: "flex items-center gap-0.5 text-xxs text-accent hover:text-accent-hover transition-colors opacity-0 group-hover:opacity-100",
+            title: "Open session",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { size: 9 }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "View session" })
+            ]
+          }
+        )
+      ] })
+    ] }, i);
+  }) });
 }
-function TopicPill({
+function TopicRow({
   topic,
   color: color2,
-  isSelected,
-  onClick
+  events,
+  isLoadingHistory,
+  onOpen
 }) {
-  const ret = Math.round((1 - topic.forgetting_score) * 100);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "button",
-    {
-      onClick,
-      className: `w-full text-left px-3 py-2 rounded-lg transition-colors flex items-center gap-2 ${isSelected ? "bg-accent/15 border border-accent/40" : "hover:bg-surface-hover border border-transparent"}`,
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 w-2.5 h-2.5 rounded-full", style: { backgroundColor: color2 } }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex-1 min-w-0", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block text-xs font-medium text-text truncate", children: topic.name }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "block text-xxs text-text-tertiary", children: [
-            ret,
-            "% retained"
-          ] })
-        ] })
-      ]
-    }
-  );
-}
-function RetentionChart({
-  topics,
-  histories,
-  selectedTopicId
-}) {
-  const now = /* @__PURE__ */ new Date();
-  const scrollRef = reactExports.useRef(null);
-  const { minTime, maxTime } = reactExports.useMemo(() => {
-    let min = now.getTime();
-    const max = now.getTime();
-    for (const topic of topics) {
-      const events = histories[topic.topic_id];
-      if (events && events.length > 0) {
-        const first = new Date(events[0].event_time).getTime();
-        if (first < min) min = first;
-      } else if (topic.last_reviewed_at) {
-        const t = new Date(topic.last_reviewed_at).getTime();
-        if (t < min) min = t;
-      }
-    }
-    const sevenDaysMs = 7 * 24 * 3600 * 1e3;
-    if (max - min < sevenDaysMs) min = max - sevenDaysMs;
-    return { minTime: min, maxTime: max };
-  }, [topics, histories]);
-  const totalMs = maxTime - minTime || 1;
-  const totalDays = totalMs / 864e5;
-  const chartW = Math.round(totalDays * PX_PER_DAY);
-  const toX = (d) => PAD.left + (d.getTime() - minTime) / totalMs * chartW;
-  const toY = (v) => PAD.top + (1 - v) * CHART_H;
-  reactExports.useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
-    }
-  }, [chartW]);
-  const xTicks = reactExports.useMemo(() => {
-    const ticks = [];
-    for (let d = 0; d <= Math.ceil(totalDays); d++) {
-      const t = new Date(minTime + d * 864e5);
-      ticks.push({
-        x: toX(t),
-        label: t.toLocaleDateString(void 0, { month: "short", day: "numeric" })
-      });
-    }
-    return ticks;
-  }, [minTime, totalDays, chartW]);
-  const svgW = chartW + PAD.left + PAD.right;
-  const svgH = CHART_H + PAD.top + PAD.bottom;
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { ref: scrollRef, className: "w-full h-full overflow-x-auto thin-scrollbar", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "svg",
-    {
-      width: svgW,
-      height: svgH,
-      style: { display: "block", minHeight: svgH },
-      children: [
-        [0, 0.25, 0.5, 0.75, 1].map((v) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "line",
-          {
-            x1: PAD.left,
-            x2: PAD.left + chartW,
-            y1: toY(v),
-            y2: toY(v),
-            stroke: "currentColor",
-            strokeOpacity: 0.08,
-            strokeWidth: 1
-          },
-          v
-        )),
-        xTicks.map((tick, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "line",
-          {
-            x1: tick.x,
-            x2: tick.x,
-            y1: PAD.top,
-            y2: PAD.top + CHART_H,
-            stroke: "currentColor",
-            strokeOpacity: 0.05,
-            strokeWidth: 1
-          },
-          i
-        )),
-        [0, 0.5, 1].map((v) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "text",
-          {
-            x: PAD.left - 4,
-            y: toY(v) + 3,
-            fontSize: 7,
-            textAnchor: "end",
-            fill: "currentColor",
-            opacity: 0.4,
-            children: [
-              Math.round(v * 100),
-              "%"
-            ]
-          },
-          v
-        )),
-        xTicks.map((tick, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "text",
-          {
-            x: tick.x,
-            y: PAD.top + CHART_H + 16,
-            fontSize: 7,
-            textAnchor: "middle",
-            fill: "currentColor",
-            opacity: 0.4,
-            children: tick.label
-          },
-          i
-        )),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "line",
-          {
-            x1: PAD.left,
-            x2: PAD.left + chartW,
-            y1: PAD.top + CHART_H,
-            y2: PAD.top + CHART_H,
-            stroke: "currentColor",
-            strokeOpacity: 0.2,
-            strokeWidth: 1
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "line",
-          {
-            x1: PAD.left,
-            x2: PAD.left,
-            y1: PAD.top,
-            y2: PAD.top + CHART_H,
-            stroke: "currentColor",
-            strokeOpacity: 0.2,
-            strokeWidth: 1
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "line",
-          {
-            x1: toX(now),
-            x2: toX(now),
-            y1: PAD.top,
-            y2: PAD.top + CHART_H,
-            stroke: "currentColor",
-            strokeOpacity: 0.25,
-            strokeWidth: 1,
-            strokeDasharray: "3 3"
-          }
-        ),
-        topics.map((topic, idx) => {
-          const color2 = TOPIC_COLORS[idx % TOPIC_COLORS.length];
-          const events = histories[topic.topic_id];
-          const isSelected = topic.topic_id === selectedTopicId;
-          const opacity = selectedTopicId === null ? 1 : isSelected ? 1 : 0.18;
-          let polylinePoints = "";
-          let dotX = null;
-          let dotY = null;
-          if (events && events.length > 0) {
-            const pts = computeCurve(events, now, minTime, chartW, totalMs);
-            polylinePoints = pts.map((p) => `${(p.x + PAD.left).toFixed(1)},${(p.y + PAD.top).toFixed(1)}`).join(" ");
-            const last = pts[pts.length - 1];
-            if (last) {
-              dotX = last.x + PAD.left;
-              dotY = last.y + PAD.top;
+  const [isOpen, setIsOpen] = reactExports.useState(false);
+  const { pct, cls } = retentionLabel(topic.forgetting_score);
+  const isDue = topic.next_review_at ? new Date(topic.next_review_at) <= /* @__PURE__ */ new Date() : false;
+  const lastSeen = topic.last_reviewed_at ? daysAgo(topic.last_reviewed_at) : null;
+  const nextReview = topic.next_review_at ? new Date(topic.next_review_at).toLocaleDateString(void 0, { month: "short", day: "numeric" }) : null;
+  function handleToggle() {
+    if (!isOpen && events === void 0) onOpen();
+    setIsOpen((v) => !v);
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-b border-line last:border-b-0", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
+      {
+        onClick: handleToggle,
+        className: "w-full px-5 py-3 flex items-center gap-3 hover:bg-surface-hover transition-colors text-left",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 rounded-full shrink-0", style: { backgroundColor: color2 } }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1 text-sm font-medium text-text truncate min-w-0", children: topic.name }),
+          isDue && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-xxs font-semibold text-error bg-error/10 px-1.5 py-0.5 rounded-full", children: "Due" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-1 bg-surface-active rounded-full overflow-hidden shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "div",
+            {
+              className: "h-full rounded-full transition-all bg-accent/85",
+              style: { width: `${pct}%` }
             }
-          } else if (topic.last_reviewed_at) {
-            const recallDate = new Date(topic.last_reviewed_at);
-            const daysSince = (now.getTime() - recallDate.getTime()) / 864e5;
-            const ret = retention(daysSince, topic.strength);
-            const x0 = toX(recallDate);
-            const x1 = toX(now);
-            polylinePoints = `${x0.toFixed(1)},${toY(1).toFixed(1)} ${x1.toFixed(1)},${toY(ret).toFixed(1)}`;
-            dotX = x1;
-            dotY = toY(ret);
-          }
-          if (!polylinePoints) return null;
-          return /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { opacity, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "polyline",
-              {
-                points: polylinePoints,
-                fill: "none",
-                stroke: color2,
-                strokeWidth: isSelected ? 2 : 1.5,
-                strokeLinejoin: "round",
-                strokeLinecap: "round"
-              }
-            ),
-            dotX !== null && dotY !== null && /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "circle",
-              {
-                cx: dotX,
-                cy: dotY,
-                r: isSelected ? 4.5 : 3,
-                fill: color2,
-                stroke: "white",
-                strokeWidth: 1
-              }
-            )
-          ] }, topic.topic_id);
-        })
-      ]
-    }
-  ) });
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: `text-xs font-semibold w-9 text-right shrink-0 ${cls}`, children: [
+            pct,
+            "%"
+          ] }),
+          lastSeen && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs text-text-tertiary w-14 text-right shrink-0 hidden sm:block", children: lastSeen }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            ChevronDown,
+            {
+              size: 12,
+              className: `text-text-tertiary shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`
+            }
+          )
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: `grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-5 pb-4 pt-2 flex flex-col gap-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-6", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary mb-0.5", children: "Strength" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(StrengthDots, { strength: topic.strength })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary mb-0.5", children: "Reviews" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium text-text", children: topic.repetitions })
+            ] }),
+            nextReview && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary mb-0.5", children: "Next review" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `text-xs font-medium ${isDue ? "text-error" : "text-text"}`, children: nextReview })
+            ] }),
+            lastSeen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary mb-0.5", children: "Last recall" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium text-text", children: lastSeen })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs font-semibold text-text-tertiary uppercase tracking-wide mb-2", children: "History" }),
+            isLoadingHistory ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 10, className: "text-text-tertiary animate-spin" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs text-text-tertiary", children: "Loading…" })
+            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx(EventTimeline, { events: events != null ? events : [], color: color2 })
+          ] })
+        ] }) })
+      }
+    )
+  ] });
 }
 function TrackingView() {
   const {
@@ -25469,23 +25373,21 @@ function TrackingView() {
     error,
     showDueOnly,
     topicHistories,
-    selectedTopicId,
+    loadingHistories,
     loadTopics,
     toggleDueOnly,
     recompute,
-    loadTopicHistory,
-    selectTopic
+    loadTopicHistory
   } = useTrackingStore();
   reactExports.useEffect(() => {
     loadTopics();
   }, []);
-  reactExports.useEffect(() => {
-    for (const topic of topics) {
-      if (!(topic.topic_id in topicHistories)) {
-        loadTopicHistory(topic.topic_id);
-      }
-    }
-  }, [topics]);
+  const sorted = [...topics].sort((a, b) => {
+    const aDue = a.next_review_at && new Date(a.next_review_at) <= /* @__PURE__ */ new Date() ? 0 : 1;
+    const bDue = b.next_review_at && new Date(b.next_review_at) <= /* @__PURE__ */ new Date() ? 0 : 1;
+    if (aDue !== bDue) return aDue - bDue;
+    return a.forgetting_score - b.forgetting_score;
+  });
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-line shrink-0", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
@@ -25522,79 +25424,26 @@ function TrackingView() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingDown, { size: 32, strokeWidth: 1.2, className: "text-error" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-error", children: error }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: loadTopics, className: "text-xs text-accent hover:text-accent-hover transition-colors", children: "Retry" })
-    ] }) : topics.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center flex-1 gap-4 text-center", children: [
+    ] }) : sorted.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center flex-1 gap-4 text-center", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-5 rounded-2xl bg-accent-subtle", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingDown, { size: 36, strokeWidth: 1.2, className: "text-accent" }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-text", children: showDueOnly ? "No topics due for review" : "No topics tracked yet" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-text-tertiary max-w-xs leading-relaxed", children: showDueOnly ? "All caught up! Come back later." : "Analyze a browsing session to start tracking learning topics." })
       ] })
-    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-1 min-h-0", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-36 shrink-0 border-r border-line overflow-y-auto thin-scrollbar p-2 flex flex-col gap-0.5", children: topics.map((topic, idx) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-        TopicPill,
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto thin-scrollbar", children: sorted.map((topic) => {
+      const colorIdx = topics.findIndex((t) => t.topic_id === topic.topic_id);
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(
+        TopicRow,
         {
           topic,
-          color: TOPIC_COLORS[idx % TOPIC_COLORS.length],
-          isSelected: topic.topic_id === selectedTopicId,
-          onClick: () => selectTopic(topic.topic_id === selectedTopicId ? null : topic.topic_id)
+          color: TOPIC_COLORS[colorIdx % TOPIC_COLORS.length],
+          events: topicHistories[topic.topic_id],
+          isLoadingHistory: loadingHistories.has(topic.topic_id),
+          onOpen: () => loadTopicHistory(topic.topic_id)
         },
         topic.topic_id
-      )) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0 flex flex-col p-3 gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs text-text-tertiary", children: "Retention over time" }),
-          selectedTopicId !== null && /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => selectTopic(null),
-              className: "text-xxs text-text-tertiary hover:text-text transition-colors",
-              children: "Show all"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 min-h-0 overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-          RetentionChart,
-          {
-            topics,
-            histories: topicHistories,
-            selectedTopicId
-          }
-        ) }),
-        selectedTopicId !== null && (() => {
-          const idx = topics.findIndex((t) => t.topic_id === selectedTopicId);
-          const topic = topics[idx];
-          if (!topic) return null;
-          const color2 = TOPIC_COLORS[idx % TOPIC_COLORS.length];
-          const isDue = topic.next_review_at ? new Date(topic.next_review_at) <= /* @__PURE__ */ new Date() : false;
-          const ret = Math.round((1 - topic.forgetting_score) * 100);
-          const lastSeen = topic.last_reviewed_at ? new Date(topic.last_reviewed_at).toLocaleDateString(void 0, { month: "short", day: "numeric" }) : null;
-          return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-xl bg-surface border border-line p-3 shrink-0", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 rounded-full shrink-0", style: { backgroundColor: color2 } }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-text truncate", children: topic.name }),
-              isDue && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-xxs font-semibold text-error bg-error/10 px-2 py-0.5 rounded-full", children: "Due" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4 text-xxs text-text-tertiary", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-medium text-text", children: [
-                  ret,
-                  "%"
-                ] }),
-                " retained"
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-medium text-text", children: topic.repetitions }),
-                " review",
-                topic.repetitions !== 1 ? "s" : ""
-              ] }),
-              lastSeen && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                "Last seen ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-medium text-text", children: lastSeen })
-              ] })
-            ] })
-          ] });
-        })()
-      ] })
-    ] })
+      );
+    }) })
   ] });
 }
 function AppLayout() {

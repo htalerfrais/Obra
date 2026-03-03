@@ -179,5 +179,6 @@ class RecallService:
                 event_type=e["event_type"],
                 strength=strength,
                 forgetting_score=forgetting_score,
+                session_identifier=payload.get("session_identifier"),
             ))
         return TopicHistoryResponse(topic_id=topic_id, events=history)

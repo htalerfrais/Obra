@@ -18,6 +18,7 @@ export interface RecallHistoryEvent {
   event_type: string
   strength: number
   forgetting_score: number
+  session_identifier?: string
 }
 
 export interface TopicHistoryResponse {
