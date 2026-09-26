@@ -4,6 +4,7 @@ export interface TopicTrackingItem {
   description?: string
   forgetting_score: number
   strength: number
+  stability_days: number
   repetitions: number
   next_review_at?: string
   last_reviewed_at?: string
@@ -17,8 +18,10 @@ export interface RecallHistoryEvent {
   event_time: string
   event_type: string
   strength: number
+  stability_days: number
   forgetting_score: number
   session_identifier?: string
+  score?: number // quiz events only
 }
 
 export interface TopicHistoryResponse {

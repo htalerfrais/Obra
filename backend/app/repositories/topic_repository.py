@@ -143,6 +143,24 @@ class TopicRepository(BaseRepository):
         result = self._execute(operation, "Failed to list due topics")
         return result if isinstance(result, list) else []
 
+    def get_topic_with_state(self, user_id: int, topic_id: int) -> Optional[Dict]:
+        def operation(db):
+            row = (
+                db.query(Topic, TopicRecallState)
+                .outerjoin(TopicRecallState, TopicRecallState.topic_id == Topic.id)
+                .filter(Topic.user_id == user_id)
+                .filter(Topic.id == topic_id)
+                .first()
+            )
+            if not row:
+                return None
+            topic, state = row
+            topic_dict = self._to_dict(topic)
+            topic_dict["recall_state"] = self._to_dict(state) if state else None
+            return topic_dict
+
+        return self._execute(operation, "Failed to get topic")
+
     def list_topics_with_state(self, user_id: int, limit: int = 100) -> List[Dict]:
         def operation(db):
             rows = (

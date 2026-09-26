@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { RefreshCw, Brain, TrendingDown, ChevronDown, ExternalLink } from 'lucide-react'
+import { RefreshCw, Brain, TrendingDown, ChevronDown, ExternalLink, CheckCircle2, BrainCircuit } from 'lucide-react'
 import { useTrackingStore } from '../../stores/useTrackingStore'
 import { useSessionStore } from '../../stores/useSessionStore'
+import { useQuizStore } from '../../stores/useQuizStore'
 import type { TopicTrackingItem, RecallHistoryEvent } from '../../types/tracking'
-
-const TOPIC_COLORS = [
-  '#6366f1', '#ec4899', '#f97316', '#14b8a6',
-  '#84cc16', '#eab308', '#06b6d4', '#a855f7',
-]
+import ForgettingCurvesChart from './components/ForgettingCurvesChart'
+import TopicRetentionCurve from './components/TopicRetentionCurve'
+import { CHART, isDue, retentionPct } from './retention'
 
 function daysAgo(dateStr: string): string {
   const diff = (Date.now() - new Date(dateStr).getTime()) / 86400000
@@ -38,7 +37,7 @@ function StrengthDots({ strength }: { strength: number }) {
   )
 }
 
-function EventTimeline({ events, color }: { events: RecallHistoryEvent[]; color: string }) {
+function EventTimeline({ events }: { events: RecallHistoryEvent[] }) {
   const navigate = useNavigate()
   const setActiveSession = useSessionStore((s) => s.setActiveSession)
 
@@ -66,11 +65,13 @@ function EventTimeline({ events, color }: { events: RecallHistoryEvent[]; color:
 
         return (
           <div key={i} className="flex items-start gap-2 group">
-            <span className="mt-0.5 w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: color }} />
+            <span className="mt-0.5 w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: CHART.accent }} />
             <div className="min-w-0 flex items-center gap-1.5 flex-wrap">
               <span className="text-xxs font-medium text-text capitalize">{e.event_type}</span>
               <span className="text-xxs text-text-tertiary">· {date}</span>
-              <span className="text-xxs text-text-tertiary">· {ret}% retained</span>
+              <span className="text-xxs text-text-tertiary">
+                · {e.event_type === 'quiz' && e.score != null ? `scored ${Math.round(e.score * 100)}%` : `${ret}% retained`}
+              </span>
               {isObserved && (
                 <button
                   onClick={() => goToSession(e.session_identifier!)}
@@ -91,20 +92,24 @@ function EventTimeline({ events, color }: { events: RecallHistoryEvent[]; color:
 
 function TopicRow({
   topic,
-  color,
+  isHighlighted,
   events,
   isLoadingHistory,
   onOpen,
+  onHover,
 }: {
   topic: TopicTrackingItem
-  color: string
+  isHighlighted: boolean
   events: RecallHistoryEvent[] | undefined
   isLoadingHistory: boolean
   onOpen: () => void
+  onHover: (topicId: number | null) => void
 }) {
   const [isOpen, setIsOpen] = useState(false)
-  const { pct } = retentionLabel(topic.forgetting_score)
-  const isDue = topic.next_review_at ? new Date(topic.next_review_at) <= new Date() : false
+  const { pct, label, cls } = retentionLabel(topic.forgetting_score)
+  const due = isDue(topic)
+  const navigate = useNavigate()
+  const startQuiz = useQuizStore((s) => s.startQuiz)
   const lastSeen = topic.last_reviewed_at ? daysAgo(topic.last_reviewed_at) : null
   const nextReview = topic.next_review_at
     ? new Date(topic.next_review_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
@@ -116,17 +121,24 @@ function TopicRow({
   }
 
   return (
-    <div className="border-b border-line last:border-b-0">
+    <div
+      className="border-b border-line last:border-b-0"
+      onMouseEnter={() => onHover(topic.topic_id)}
+      onMouseLeave={() => onHover(null)}
+    >
       {/* Row header */}
       <button
         onClick={handleToggle}
         className="w-full px-5 py-3 flex items-center gap-3 hover:bg-surface-hover transition-colors text-left"
       >
-        <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: color }} />
+        <span
+          className="w-2 h-2 rounded-full shrink-0 transition-colors"
+          style={{ backgroundColor: isHighlighted ? CHART.accent : CHART.context }}
+        />
 
-        <span className="flex-1 text-sm font-medium text-text truncate min-w-0">{topic.name}</span>
+        <span className="flex-1 text-sm font-medium text-text truncate min-w-0" title={topic.name}>{topic.name}</span>
 
-        {isDue && (
+        {due && (
           <span className="shrink-0 text-xxs font-semibold text-error/75 bg-error/8 px-1.5 py-0.5 rounded-full">
             Due
           </span>
@@ -163,7 +175,11 @@ function TopicRow({
         <div className="overflow-hidden">
           <div className="px-5 pb-4 pt-2 flex flex-col gap-4">
             {/* KPIs */}
-            <div className="flex items-center gap-6">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+              <div>
+                <p className="text-xxs text-text-tertiary mb-0.5">Retention</p>
+                <p className={`text-xs font-medium ${cls}`}>{label}</p>
+              </div>
               <div>
                 <p className="text-xxs text-text-tertiary mb-0.5">Strength</p>
                 <StrengthDots strength={topic.strength} />
@@ -175,7 +191,7 @@ function TopicRow({
               {nextReview && (
                 <div>
                   <p className="text-xxs text-text-tertiary mb-0.5">Next review</p>
-                  <p className={`text-xs font-medium ${isDue ? 'text-error/75' : 'text-text'}`}>{nextReview}</p>
+                  <p className={`text-xs font-medium ${due ? 'text-error/75' : 'text-text'}`}>{nextReview}</p>
                 </div>
               )}
               {lastSeen && (
@@ -184,7 +200,25 @@ function TopicRow({
                   <p className="text-xs font-medium text-text">{lastSeen}</p>
                 </div>
               )}
+              <button
+                onClick={() => {
+                  startQuiz(topic.topic_id, topic.name)
+                  navigate('/quiz')
+                }}
+                className="ml-auto flex items-center gap-1.5 text-xxs font-medium px-3 py-1.5 rounded-lg bg-accent text-white hover:bg-accent-hover transition-colors shrink-0"
+              >
+                <BrainCircuit size={11} />
+                Quiz me
+              </button>
             </div>
+
+            {/* Retention curve */}
+            {events && events.length > 0 && (
+              <div>
+                <p className="text-xxs font-semibold text-text-tertiary uppercase tracking-wide mb-2">Retention over time</p>
+                <TopicRetentionCurve topic={topic} events={events} />
+              </div>
+            )}
 
             {/* History */}
             <div>
@@ -195,12 +229,36 @@ function TopicRow({
                   <span className="text-xxs text-text-tertiary">Loading…</span>
                 </div>
               ) : (
-                <EventTimeline events={events ?? []} color={color} />
+                <EventTimeline events={events ?? []} />
               )}
             </div>
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+function StatTile({ label, value, hint, hintCls = 'text-text-tertiary' }: {
+  label: string
+  value: string
+  hint?: string
+  hintCls?: string
+}) {
+  return (
+    <div className="flex-1 min-w-[120px] px-4 py-3 rounded-xl bg-surface/60 border border-line">
+      <p className="text-xxs text-text-tertiary">{label}</p>
+      <p className="text-xl font-semibold text-text mt-0.5">{value}</p>
+      {hint && <p className={`text-xxs mt-0.5 ${hintCls}`}>{hint}</p>}
+    </div>
+  )
+}
+
+function SectionHeader({ title, count }: { title: string; count: number }) {
+  return (
+    <div className="px-5 pt-5 pb-2 flex items-center gap-2">
+      <h2 className="text-xxs font-semibold text-text-tertiary uppercase tracking-wide">{title}</h2>
+      <span className="text-xxs text-text-tertiary">· {count}</span>
     </div>
   )
 }
@@ -211,26 +269,44 @@ export default function TrackingView() {
     isLoading,
     isRecomputing,
     error,
-    showDueOnly,
     topicHistories,
     loadingHistories,
     loadTopics,
-    toggleDueOnly,
     recompute,
     loadTopicHistory,
   } = useTrackingStore()
+  const [highlightedId, setHighlightedId] = useState<number | null>(null)
 
   useEffect(() => {
     loadTopics()
   }, [])
 
-  // Sort: due first, then by retention ascending
-  const sorted = [...topics].sort((a, b) => {
-    const aDue = a.next_review_at && new Date(a.next_review_at) <= new Date() ? 0 : 1
-    const bDue = b.next_review_at && new Date(b.next_review_at) <= new Date() ? 0 : 1
-    if (aDue !== bDue) return aDue - bDue
-    return a.forgetting_score - b.forgetting_score
-  })
+  // Due: most forgotten first. Upcoming: soonest review first.
+  const dueTopics = topics.filter((t) => isDue(t)).sort((a, b) => b.forgetting_score - a.forgetting_score)
+  const upcomingTopics = topics
+    .filter((t) => !isDue(t))
+    .sort((a, b) => {
+      const at = a.next_review_at ? new Date(a.next_review_at).getTime() : Infinity
+      const bt = b.next_review_at ? new Date(b.next_review_at).getTime() : Infinity
+      return at - bt
+    })
+
+  const avgRetention = topics.length
+    ? Math.round(topics.reduce((sum, t) => sum + retentionPct(t), 0) / topics.length)
+    : 0
+  const criticalCount = topics.filter((t) => retentionPct(t) < 40).length
+
+  const renderRow = (topic: TopicTrackingItem) => (
+    <TopicRow
+      key={topic.topic_id}
+      topic={topic}
+      isHighlighted={highlightedId === topic.topic_id}
+      events={topicHistories[topic.topic_id]}
+      isLoadingHistory={loadingHistories.has(topic.topic_id)}
+      onOpen={() => loadTopicHistory(topic.topic_id)}
+      onHover={setHighlightedId}
+    />
+  )
 
   return (
     <div className="flex flex-col h-full">
@@ -240,30 +316,18 @@ export default function TrackingView() {
           <Brain size={16} className="text-accent" />
           <h1 className="text-sm font-semibold text-text">Memory Tracking</h1>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={toggleDueOnly}
-            className={`text-xxs font-medium px-3 py-1.5 rounded-lg transition-colors ${
-              showDueOnly
-                ? 'bg-accent text-white'
-                : 'bg-surface text-text-secondary hover:bg-surface-hover'
-            }`}
-          >
-            Due only
-          </button>
-          <button
-            onClick={recompute}
-            disabled={isRecomputing}
-            className="flex items-center gap-1.5 text-xxs font-medium px-3 py-1.5 rounded-lg bg-surface text-text-secondary hover:bg-surface-hover transition-colors disabled:opacity-50"
-          >
-            <RefreshCw size={11} className={isRecomputing ? 'animate-spin' : ''} />
-            Recompute
-          </button>
-        </div>
+        <button
+          onClick={recompute}
+          disabled={isRecomputing}
+          className="flex items-center gap-1.5 text-xxs font-medium px-3 py-1.5 rounded-lg bg-surface text-text-secondary hover:bg-surface-hover transition-colors disabled:opacity-50"
+        >
+          <RefreshCw size={11} className={isRecomputing ? 'animate-spin' : ''} />
+          Recompute
+        </button>
       </div>
 
       {/* Content */}
-      {isLoading ? (
+      {isLoading && topics.length === 0 ? (
         <div className="flex flex-col items-center justify-center flex-1 gap-3">
           <RefreshCw size={20} className="text-accent animate-spin" />
           <p className="text-sm text-text-tertiary">Loading topics…</p>
@@ -276,38 +340,60 @@ export default function TrackingView() {
             Retry
           </button>
         </div>
-      ) : sorted.length === 0 ? (
+      ) : topics.length === 0 ? (
         <div className="flex flex-col items-center justify-center flex-1 gap-4 text-center">
           <div className="p-5 rounded-2xl bg-accent-subtle">
             <TrendingDown size={36} strokeWidth={1.2} className="text-accent" />
           </div>
           <div className="space-y-1">
-            <p className="text-sm font-medium text-text">
-              {showDueOnly ? 'No topics due for review' : 'No topics tracked yet'}
-            </p>
+            <p className="text-sm font-medium text-text">No topics tracked yet</p>
             <p className="text-xs text-text-tertiary max-w-xs leading-relaxed">
-              {showDueOnly
-                ? 'All caught up! Come back later.'
-                : 'Analyze a browsing session to start tracking learning topics.'}
+              Analyze a browsing session to start tracking learning topics.
             </p>
           </div>
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto thin-scrollbar">
-          {sorted.map((topic) => {
-            // Use original index for stable color
-            const colorIdx = topics.findIndex((t) => t.topic_id === topic.topic_id)
-            return (
-              <TopicRow
-                key={topic.topic_id}
-                topic={topic}
-                color={TOPIC_COLORS[colorIdx % TOPIC_COLORS.length]}
-                events={topicHistories[topic.topic_id]}
-                isLoadingHistory={loadingHistories.has(topic.topic_id)}
-                onOpen={() => loadTopicHistory(topic.topic_id)}
-              />
-            )
-          })}
+          {/* KPIs */}
+          <div className="px-5 pt-5 flex flex-wrap gap-3">
+            <StatTile label="Tracked topics" value={String(topics.length)} />
+            <StatTile
+              label="Due for review"
+              value={String(dueTopics.length)}
+              hint={dueTopics.length === 0 ? 'All caught up' : 'Review to strengthen memory'}
+            />
+            <StatTile label="Average retention" value={`${avgRetention}%`} />
+            <StatTile
+              label="Critical"
+              value={String(criticalCount)}
+              hint="Below 40% retention"
+              hintCls={criticalCount > 0 ? 'text-error/75' : 'text-text-tertiary'}
+            />
+          </div>
+
+          {/* Overview chart */}
+          <div className="mx-5 mt-3 px-4 py-4 rounded-xl bg-bg-raised border border-line">
+            <ForgettingCurvesChart topics={topics} highlightedId={highlightedId} onHighlight={setHighlightedId} />
+          </div>
+
+          {/* Due now */}
+          <SectionHeader title="Due for review" count={dueTopics.length} />
+          {dueTopics.length === 0 ? (
+            <div className="px-5 pb-2 flex items-center gap-2 text-xs text-text-tertiary">
+              <CheckCircle2 size={13} className="text-success" />
+              Nothing to review right now. Come back later.
+            </div>
+          ) : (
+            <div className="border-y border-line">{dueTopics.map(renderRow)}</div>
+          )}
+
+          {/* Upcoming */}
+          {upcomingTopics.length > 0 && (
+            <>
+              <SectionHeader title="Upcoming reviews" count={upcomingTopics.length} />
+              <div className="border-t border-line mb-5">{upcomingTopics.map(renderRow)}</div>
+            </>
+          )}
         </div>
       )}
     </div>

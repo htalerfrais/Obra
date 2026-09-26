@@ -68,7 +68,7 @@ var hasRequiredReactJsxRuntime_production;
 function requireReactJsxRuntime_production() {
   if (hasRequiredReactJsxRuntime_production) return reactJsxRuntime_production;
   hasRequiredReactJsxRuntime_production = 1;
-  var REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
+  var REACT_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.transitional.element"), REACT_FRAGMENT_TYPE = /* @__PURE__ */ Symbol.for("react.fragment");
   function jsxProd(type, config, maybeKey) {
     var key = null;
     void 0 !== maybeKey && (key = "" + maybeKey);
@@ -108,7 +108,7 @@ var hasRequiredReact_production;
 function requireReact_production() {
   if (hasRequiredReact_production) return react_production;
   hasRequiredReact_production = 1;
-  var REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), MAYBE_ITERATOR_SYMBOL = Symbol.iterator;
+  var REACT_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = /* @__PURE__ */ Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = /* @__PURE__ */ Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = /* @__PURE__ */ Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = /* @__PURE__ */ Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = /* @__PURE__ */ Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = /* @__PURE__ */ Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = /* @__PURE__ */ Symbol.for("react.suspense"), REACT_MEMO_TYPE = /* @__PURE__ */ Symbol.for("react.memo"), REACT_LAZY_TYPE = /* @__PURE__ */ Symbol.for("react.lazy"), MAYBE_ITERATOR_SYMBOL = Symbol.iterator;
   function getIteratorFn(maybeIterable) {
     if (null === maybeIterable || "object" !== typeof maybeIterable) return null;
     maybeIterable = MAYBE_ITERATOR_SYMBOL && maybeIterable[MAYBE_ITERATOR_SYMBOL] || maybeIterable["@@iterator"];
@@ -847,7 +847,7 @@ function requireReactDom_production() {
     },
     p: 0,
     findDOMNode: null
-  }, REACT_PORTAL_TYPE = Symbol.for("react.portal");
+  }, REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal");
   function createPortal$1(children, containerInfo, implementation) {
     var key = 3 < arguments.length && void 0 !== arguments[3] ? arguments[3] : null;
     return {
@@ -1100,16 +1100,16 @@ function requireReactDomClient_production() {
     }
     return null;
   }
-  var assign = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_PROVIDER_TYPE = Symbol.for("react.provider"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy");
-  var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
-  var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
+  var assign = Object.assign, REACT_LEGACY_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.element"), REACT_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = /* @__PURE__ */ Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = /* @__PURE__ */ Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = /* @__PURE__ */ Symbol.for("react.profiler"), REACT_PROVIDER_TYPE = /* @__PURE__ */ Symbol.for("react.provider"), REACT_CONSUMER_TYPE = /* @__PURE__ */ Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = /* @__PURE__ */ Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = /* @__PURE__ */ Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = /* @__PURE__ */ Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = /* @__PURE__ */ Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = /* @__PURE__ */ Symbol.for("react.memo"), REACT_LAZY_TYPE = /* @__PURE__ */ Symbol.for("react.lazy");
+  var REACT_ACTIVITY_TYPE = /* @__PURE__ */ Symbol.for("react.activity");
+  var REACT_MEMO_CACHE_SENTINEL = /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel");
   var MAYBE_ITERATOR_SYMBOL = Symbol.iterator;
   function getIteratorFn(maybeIterable) {
     if (null === maybeIterable || "object" !== typeof maybeIterable) return null;
     maybeIterable = MAYBE_ITERATOR_SYMBOL && maybeIterable[MAYBE_ITERATOR_SYMBOL] || maybeIterable["@@iterator"];
     return "function" === typeof maybeIterable ? maybeIterable : null;
   }
-  var REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference");
+  var REACT_CLIENT_REFERENCE = /* @__PURE__ */ Symbol.for("react.client.reference");
   function getComponentNameFromType(type) {
     if (null == type) return null;
     if ("function" === typeof type)
@@ -12058,6 +12058,14 @@ function requireClient() {
   return client.exports;
 }
 var clientExports = requireClient();
+var ABSOLUTE_URL_REGEX = /^(?:[a-z][a-z0-9+.-]*:|[\\/]{2})/i;
+var PROTOCOL_RELATIVE_URL_REGEX = /^[\\/]{2}/;
+function normalizeProtocolRelativeUrl(url, protocol) {
+  return protocol + url.replace(/\\/g, "/");
+}
+function isLocation(obj) {
+  return typeof obj === "object" && obj != null && "pathname" in obj && "search" in obj && "hash" in obj && "state" in obj && "key" in obj;
+}
 function createMemoryHistory(options = {}) {
   let { initialEntries = ["/"], initialIndex, v5Compat = false } = options;
   let entries;
@@ -12065,7 +12073,8 @@ function createMemoryHistory(options = {}) {
     (entry, index22) => createMemoryLocation(
       entry,
       typeof entry === "string" ? null : entry.state,
-      index22 === 0 ? "default" : void 0
+      index22 === 0 ? "default" : void 0,
+      typeof entry === "string" ? void 0 : entry.mask
     )
   );
   let index2 = clampIndex(
@@ -12079,12 +12088,13 @@ function createMemoryHistory(options = {}) {
   function getCurrentLocation() {
     return entries[index2];
   }
-  function createMemoryLocation(to, state = null, key) {
+  function createMemoryLocation(to, state = null, key, mask) {
     let location = createLocation(
       entries ? getCurrentLocation().pathname : "/",
       to,
       state,
-      key
+      key,
+      mask
     );
     warning(
       location.pathname.charAt(0) === "/",
@@ -12121,7 +12131,7 @@ function createMemoryHistory(options = {}) {
     },
     push(to, state) {
       action = "PUSH";
-      let nextLocation = createMemoryLocation(to, state);
+      let nextLocation = isLocation(to) ? to : createMemoryLocation(to, state);
       index2 += 1;
       entries.splice(index2, entries.length, nextLocation);
       if (v5Compat && listener) {
@@ -12130,7 +12140,7 @@ function createMemoryHistory(options = {}) {
     },
     replace(to, state) {
       action = "REPLACE";
-      let nextLocation = createMemoryLocation(to, state);
+      let nextLocation = isLocation(to) ? to : createMemoryLocation(to, state);
       entries[index2] = nextLocation;
       if (v5Compat && listener) {
         listener({ action, location: nextLocation, delta: 0 });
@@ -12171,7 +12181,7 @@ function warning(cond, message) {
 function createKey() {
   return Math.random().toString(36).substring(2, 10);
 }
-function createLocation(current, to, state = null, key) {
+function createLocation(current, to, state = null, key, mask) {
   let location = __spreadProps(__spreadValues({
     pathname: typeof current === "string" ? current : current.pathname,
     search: "",
@@ -12182,7 +12192,8 @@ function createLocation(current, to, state = null, key) {
     // full Locations now and avoid the need to run through this flow at all
     // But that's a pretty big refactor to the current test suite so going to
     // keep as is for the time being and just let any incoming keys take precedence
-    key: to && to.key || key || createKey()
+    key: to && to.key || key || createKey(),
+    mask
   });
   return location;
 }
@@ -12219,17 +12230,16 @@ function parsePath(path) {
 function matchRoutes(routes, locationArg, basename2 = "/") {
   return matchRoutesImpl(routes, locationArg, basename2, false);
 }
-function matchRoutesImpl(routes, locationArg, basename2, allowPartial) {
+function matchRoutesImpl(routes, locationArg, basename2, allowPartial, precomputedBranches) {
   let location = typeof locationArg === "string" ? parsePath(locationArg) : locationArg;
   let pathname = stripBasename(location.pathname || "/", basename2);
   if (pathname == null) {
     return null;
   }
-  let branches = flattenRoutes(routes);
-  rankRouteBranches(branches);
+  let branches = flattenAndRankRoutes(routes);
   let matches = null;
+  let decoded = decodePath(pathname);
   for (let i = 0; matches == null && i < branches.length; ++i) {
-    let decoded = decodePath(pathname);
     matches = matchRouteBranch(
       branches[i],
       decoded,
@@ -12237,6 +12247,11 @@ function matchRoutesImpl(routes, locationArg, basename2, allowPartial) {
     );
   }
   return matches;
+}
+function flattenAndRankRoutes(routes) {
+  let branches = flattenRoutes(routes);
+  rankRouteBranches(branches);
+  return branches;
 }
 function flattenRoutes(routes, branches = [], parentsMeta = [], parentPath = "", _hasParentOptionalSegments = false) {
   let flattenRoute = (route, index2, hasParentOptionalSegments = _hasParentOptionalSegments, relativePath) => {
@@ -12279,7 +12294,17 @@ function flattenRoutes(routes, branches = [], parentsMeta = [], parentPath = "",
     branches.push({
       path,
       score: computeScore(path, route.index),
-      routesMeta
+      routesMeta: routesMeta.map((meta2, i) => {
+        let [matcher, params] = compilePath(
+          meta2.relativePath,
+          meta2.caseSensitive,
+          i === routesMeta.length - 1
+        );
+        return __spreadProps(__spreadValues({}, meta2), {
+          matcher,
+          compiledParams: params
+        });
+      })
     });
   };
   routes.forEach((route, index2) => {
@@ -12369,9 +12394,19 @@ function matchRouteBranch(branch, pathname, allowPartial = false) {
     let meta = routesMeta[i];
     let end = i === routesMeta.length - 1;
     let remainingPathname = matchedPathname === "/" ? pathname : pathname.slice(matchedPathname.length) || "/";
-    let match = matchPath(
-      { path: meta.relativePath, caseSensitive: meta.caseSensitive, end },
-      remainingPathname
+    let pattern = {
+      path: meta.relativePath,
+      caseSensitive: meta.caseSensitive,
+      end
+    };
+    let match = (
+      // Use precomputed matcher if it exists
+      meta.matcher && meta.compiledParams ? matchPathImpl(
+        pattern,
+        remainingPathname,
+        meta.matcher,
+        meta.compiledParams
+      ) : matchPath(pattern, remainingPathname)
     );
     let route = meta.route;
     if (!match && end && allowPartial && !routesMeta[routesMeta.length - 1].route.index) {
@@ -12412,16 +12447,22 @@ function matchPath(pattern, pathname) {
     pattern.caseSensitive,
     pattern.end
   );
+  return matchPathImpl(pattern, pathname, matcher, compiledParams);
+}
+function matchPathImpl(pattern, pathname, matcher, compiledParams) {
   let match = pathname.match(matcher);
   if (!match) return null;
   let matchedPathname = match[0];
-  let pathnameBase = matchedPathname.replace(/(.)\/+$/, "$1");
+  let pathnameBase = removeTrailingSlash(matchedPathname, 1);
   let captureGroups = match.slice(1);
   let params = compiledParams.reduce(
     (memo2, { paramName, isOptional }, index2) => {
       if (paramName === "*") {
         let splatValue = captureGroups[index2] || "";
-        pathnameBase = matchedPathname.slice(0, matchedPathname.length - splatValue.length).replace(/(.)\/+$/, "$1");
+        pathnameBase = removeTrailingSlash(
+          matchedPathname.slice(0, matchedPathname.length - splatValue.length),
+          1
+        );
       }
       const value = captureGroups[index2];
       if (isOptional && !value) {
@@ -12448,9 +12489,16 @@ function compilePath(path, caseSensitive = false, end = true) {
   let params = [];
   let regexpSource = "^" + path.replace(/\/*\*?$/, "").replace(/^\/*/, "/").replace(/[\\.*+^${}|()[\]]/g, "\\$&").replace(
     /\/:([\w-]+)(\?)?/g,
-    (_, paramName, isOptional) => {
+    (match, paramName, isOptional, index2, str) => {
       params.push({ paramName, isOptional: isOptional != null });
-      return isOptional ? "/?([^\\/]+)?" : "/([^\\/]+)";
+      if (isOptional) {
+        let nextChar = str.charAt(index2 + match.length);
+        if (nextChar && nextChar !== "/") {
+          return "/([^\\/]*)";
+        }
+        return "(?:/([^\\/]*))?";
+      }
+      return "/([^\\/]+)";
     }
   ).replace(/\/([\w-]+)\?(\/|$)/g, "(/$1)?$2");
   if (path.endsWith("*")) {
@@ -12487,7 +12535,6 @@ function stripBasename(pathname, basename2) {
   }
   return pathname.slice(startIndex) || "/";
 }
-var ABSOLUTE_URL_REGEX = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
 function resolvePath(to, fromPathname = "/") {
   let {
     pathname: toPathname,
@@ -12496,8 +12543,8 @@ function resolvePath(to, fromPathname = "/") {
   } = typeof to === "string" ? parsePath(to) : to;
   let pathname;
   if (toPathname) {
-    toPathname = toPathname.replace(/\/\/+/g, "/");
-    if (toPathname.startsWith("/")) {
+    toPathname = removeDoubleSlashes(toPathname);
+    if (toPathname.startsWith("/") || toPathname.startsWith("\\")) {
       pathname = resolvePathname(toPathname.substring(1), "/");
     } else {
       pathname = resolvePathname(toPathname, fromPathname);
@@ -12512,7 +12559,7 @@ function resolvePath(to, fromPathname = "/") {
   };
 }
 function resolvePathname(relativePath, fromPathname) {
-  let segments = fromPathname.replace(/\/+$/, "").split("/");
+  let segments = removeTrailingSlash(fromPathname).split("/");
   let relativeSegments = relativePath.split("/");
   relativeSegments.forEach((segment) => {
     if (segment === "..") {
@@ -12583,8 +12630,16 @@ function resolveTo(toArg, routePathnames, locationPathname, isPathRelative = fal
   }
   return path;
 }
-var joinPaths = (paths) => paths.join("/").replace(/\/\/+/g, "/");
-var normalizePathname = (pathname) => pathname.replace(/\/+$/, "").replace(/^\/*/, "/");
+var removeDoubleSlashes = (path) => path.replace(/[\\/]{2,}/g, "/");
+var joinPaths = (paths) => removeDoubleSlashes(paths.join("/"));
+function removeTrailingSlash(path, minLength = 0) {
+  let end = path.length;
+  while (end > minLength && path.charCodeAt(end - 1) === 47) {
+    end--;
+  }
+  return end === path.length ? path : path.slice(0, end);
+}
+var normalizePathname = (pathname) => removeTrailingSlash(pathname).replace(/^\/*/, "/");
 var normalizeSearch = (search2) => !search2 || search2 === "?" ? "" : search2.startsWith("?") ? search2 : "?" + search2;
 var normalizeHash = (hash) => !hash || hash === "#" ? "" : hash.startsWith("#") ? hash : "#" + hash;
 var ErrorResponseImpl = class {
@@ -12604,7 +12659,8 @@ function isRouteErrorResponse(error) {
   return error != null && typeof error.status === "number" && typeof error.statusText === "string" && typeof error.internal === "boolean" && "data" in error;
 }
 function getRoutePattern(matches) {
-  return matches.map((m) => m.route.path).filter(Boolean).join("/").replace(/\/\/*/g, "/") || "/";
+  let parts = matches.map((m) => m.route.path).filter(Boolean);
+  return joinPaths(parts) || "/";
 }
 var isBrowser = typeof window !== "undefined" && typeof window.document !== "undefined" && typeof window.document.createElement !== "undefined";
 function parseToInfo(_to, basename2) {
@@ -12621,7 +12677,7 @@ function parseToInfo(_to, basename2) {
   if (isBrowser) {
     try {
       let currentUrl = new URL(window.location.href);
-      let targetUrl = to.startsWith("//") ? new URL(currentUrl.protocol + to) : new URL(to);
+      let targetUrl = PROTOCOL_RELATIVE_URL_REGEX.test(to) ? new URL(normalizeProtocolRelativeUrl(to, currentUrl.protocol)) : new URL(to);
       let path = stripBasename(targetUrl.pathname, basename2);
       if (targetUrl.origin === currentUrl.origin && path != null) {
         to = path + targetUrl.search + targetUrl.hash;
@@ -12642,6 +12698,49 @@ function parseToInfo(_to, basename2) {
   };
 }
 Object.getOwnPropertyNames(Object.prototype).sort().join("\0");
+var DEFAULT_NAVIGATION_URL = new URL("http://localhost");
+function getNavigatorCurrentUrl(navigator) {
+  if (navigator.createURL) {
+    return navigator.createURL("/");
+  }
+  try {
+    return new URL(navigator.createHref("/"), DEFAULT_NAVIGATION_URL);
+  } catch (e) {
+    return DEFAULT_NAVIGATION_URL;
+  }
+}
+function isSameOrigin(a, b) {
+  return a.origin === b.origin && (a.origin !== "null" || a.protocol === b.protocol && a.host === b.host);
+}
+function isExplicitUrl(destination, target) {
+  if (destination.startsWith("//")) {
+    return true;
+  }
+  let protocol = target.protocol.toLowerCase();
+  if (!destination.toLowerCase().startsWith(protocol)) {
+    return false;
+  }
+  return target.host === "" || destination.slice(protocol.length).startsWith("//");
+}
+function validateNavigationTarget(original, resolved, currentUrl, externalPolicy) {
+  let originalUrl = null;
+  try {
+    originalUrl = original == null ? null : new URL(original, currentUrl);
+  } catch (e) {
+  }
+  let resolvedUrl = new URL(resolved, currentUrl);
+  let originalIsExternal = originalUrl != null && !isSameOrigin(originalUrl, currentUrl);
+  let resolvedIsExternal = !isSameOrigin(resolvedUrl, currentUrl);
+  if (externalPolicy === "reject") {
+    if (originalIsExternal || resolvedIsExternal) {
+      throw new Error("External navigation is not allowed");
+    }
+  } else if (resolvedIsExternal) {
+    if (originalUrl == null || !isExplicitUrl(original, originalUrl) || !isSameOrigin(originalUrl, resolvedUrl)) {
+      throw new Error("External navigation is not allowed");
+    }
+  }
+}
 var validMutationMethodsArr = [
   "POST",
   "PUT",
@@ -12656,11 +12755,34 @@ var validRequestMethodsArr = [
   ...validMutationMethodsArr
 ];
 new Set(validRequestMethodsArr);
+var invalidProtocols = [
+  "about:",
+  "blob:",
+  "chrome:",
+  "chrome-untrusted:",
+  "content:",
+  "data:",
+  "devtools:",
+  "file:",
+  "filesystem:",
+  // eslint-disable-next-line no-script-url
+  "javascript:"
+];
+function hasInvalidProtocol(location) {
+  try {
+    return invalidProtocols.includes(new URL(location).protocol);
+  } catch (e) {
+    return false;
+  }
+}
 var DataRouterContext = reactExports.createContext(null);
 DataRouterContext.displayName = "DataRouter";
 var DataRouterStateContext = reactExports.createContext(null);
 DataRouterStateContext.displayName = "DataRouterState";
 var RSCRouterContext = reactExports.createContext(false);
+function useIsRSCRouterContext() {
+  return reactExports.useContext(RSCRouterContext);
+}
 var ViewTransitionContext = reactExports.createContext({
   isTransitioning: false
 });
@@ -12789,6 +12911,12 @@ function useNavigateUnstable() {
       if (dataRouterContext == null && basename2 !== "/") {
         path.pathname = path.pathname === "/" ? basename2 : joinPaths([basename2, path.pathname]);
       }
+      validateNavigationTarget(
+        typeof to === "string" ? to : createPath(to),
+        navigator.createHref(path),
+        getNavigatorCurrentUrl(navigator),
+        "reject"
+      );
       (!!options.replace ? navigator.replace : navigator.push)(
         path,
         options.state,
@@ -12823,7 +12951,7 @@ function useResolvedPath(to, { relative } = {}) {
 function useRoutes(routes, locationArg) {
   return useRoutesImpl(routes, locationArg);
 }
-function useRoutesImpl(routes, locationArg, dataRouterState, onError, future) {
+function useRoutesImpl(routes, locationArg, dataRouterOpts) {
   var _a;
   invariant(
     useInRouterContext(),
@@ -12867,7 +12995,15 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
     let segments = pathname.replace(/^\//, "").split("/");
     remainingPathname = "/" + segments.slice(parentSegments.length).join("/");
   }
-  let matches = matchRoutes(routes, { pathname: remainingPathname });
+  let matches = dataRouterOpts && dataRouterOpts.state.matches.length ? (
+    // If we're in a data router, use the matches we've already identified but ensure
+    // we have the latest route instances from the manifest in case elements have changed
+    dataRouterOpts.state.matches.map(
+      (m) => Object.assign(m, {
+        route: dataRouterOpts.manifest[m.route.id] || m.route
+      })
+    )
+  ) : matchRoutes(routes, { pathname: remainingPathname });
   {
     warning(
       parentRoute || matches != null,
@@ -12885,29 +13021,27 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
         pathname: joinPaths([
           parentPathnameBase,
           // Re-encode pathnames that were decoded inside matchRoutes.
-          // Pre-encode `?` and `#` ahead of `encodeLocation` because it uses
+          // Pre-encode `%`, `?` and `#` ahead of `encodeLocation` because it uses
           // `new URL()` internally and we need to prevent it from treating
           // them as separators
           navigator.encodeLocation ? navigator.encodeLocation(
-            match.pathname.replace(/\?/g, "%3F").replace(/#/g, "%23")
+            match.pathname.replace(/%/g, "%25").replace(/\?/g, "%3F").replace(/#/g, "%23")
           ).pathname : match.pathname
         ]),
         pathnameBase: match.pathnameBase === "/" ? parentPathnameBase : joinPaths([
           parentPathnameBase,
           // Re-encode pathnames that were decoded inside matchRoutes
-          // Pre-encode `?` and `#` ahead of `encodeLocation` because it uses
+          // Pre-encode `%`, `?` and `#` ahead of `encodeLocation` because it uses
           // `new URL()` internally and we need to prevent it from treating
           // them as separators
           navigator.encodeLocation ? navigator.encodeLocation(
-            match.pathnameBase.replace(/\?/g, "%3F").replace(/#/g, "%23")
+            match.pathnameBase.replace(/%/g, "%25").replace(/\?/g, "%3F").replace(/#/g, "%23")
           ).pathname : match.pathnameBase
         ])
       })
     ),
     parentMatches,
-    dataRouterState,
-    onError,
-    future
+    dataRouterOpts
   );
   if (locationArg && renderedMatches) {
     return /* @__PURE__ */ reactExports.createElement(
@@ -12919,7 +13053,8 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
             search: "",
             hash: "",
             state: null,
-            key: "default"
+            key: "default",
+            mask: void 0
           }, location),
           navigationType: "POP"
           /* Pop */
@@ -13009,16 +13144,26 @@ function RSCErrorHandler({
   children,
   error
 }) {
-  let { basename: basename2 } = reactExports.useContext(NavigationContext);
+  let { basename: basename2, navigator } = reactExports.useContext(NavigationContext);
   if (typeof error === "object" && error && "digest" in error && typeof error.digest === "string") {
     let redirect2 = decodeRedirectErrorDigest(error.digest);
     if (redirect2) {
       let existingRedirect = errorRedirectHandledMap.get(error);
       if (existingRedirect) throw existingRedirect;
       let parsed = parseToInfo(redirect2.location, basename2);
+      let target = parsed.absoluteURL || parsed.to;
+      validateNavigationTarget(
+        redirect2.location,
+        target,
+        getNavigatorCurrentUrl(navigator),
+        "allow-explicit"
+      );
+      if (hasInvalidProtocol(target)) {
+        throw new Error("Invalid redirect location");
+      }
       if (isBrowser && !errorRedirectHandledMap.get(error)) {
         if (parsed.isExternal || redirect2.reloadDocument) {
-          window.location.href = parsed.absoluteURL || parsed.to;
+          window.location.href = target;
         } else {
           const redirectPromise = Promise.resolve().then(
             () => window.__reactRouterDataRouter.navigate(parsed.to, {
@@ -13029,13 +13174,7 @@ function RSCErrorHandler({
           throw redirectPromise;
         }
       }
-      return /* @__PURE__ */ reactExports.createElement(
-        "meta",
-        {
-          httpEquiv: "refresh",
-          content: `0;url=${parsed.absoluteURL || parsed.to}`
-        }
-      );
+      return /* @__PURE__ */ reactExports.createElement("meta", { httpEquiv: "refresh", content: `0;url=${target}` });
     }
   }
   return children;
@@ -13047,7 +13186,8 @@ function RenderedRoute({ routeContext, match, children }) {
   }
   return /* @__PURE__ */ reactExports.createElement(RouteContext.Provider, { value: routeContext }, children);
 }
-function _renderMatches(matches, parentMatches = [], dataRouterState = null, onErrorHandler = null, future = null) {
+function _renderMatches(matches, parentMatches = [], dataRouterOpts) {
+  let dataRouterState = dataRouterOpts == null ? void 0 : dataRouterOpts.state;
   if (matches == null) {
     if (!dataRouterState) {
       return null;
@@ -13079,7 +13219,8 @@ function _renderMatches(matches, parentMatches = [], dataRouterState = null, onE
   }
   let renderFallback = false;
   let fallbackIndex = -1;
-  if (dataRouterState) {
+  if (dataRouterOpts && dataRouterState) {
+    renderFallback = dataRouterState.renderFallback;
     for (let i = 0; i < renderedMatches.length; i++) {
       let match = renderedMatches[i];
       if (match.route.HydrateFallback || match.route.hydrateFallbackElement) {
@@ -13089,7 +13230,9 @@ function _renderMatches(matches, parentMatches = [], dataRouterState = null, onE
         let { loaderData, errors: errors2 } = dataRouterState;
         let needsToRunLoader = match.route.loader && !loaderData.hasOwnProperty(match.route.id) && (!errors2 || errors2[match.route.id] === void 0);
         if (match.route.lazy || needsToRunLoader) {
-          renderFallback = true;
+          if (dataRouterOpts.isStatic) {
+            renderFallback = true;
+          }
           if (fallbackIndex >= 0) {
             renderedMatches = renderedMatches.slice(0, fallbackIndex + 1);
           } else {
@@ -13100,12 +13243,13 @@ function _renderMatches(matches, parentMatches = [], dataRouterState = null, onE
       }
     }
   }
+  let onErrorHandler = dataRouterOpts == null ? void 0 : dataRouterOpts.onError;
   let onError = dataRouterState && onErrorHandler ? (error, errorInfo) => {
     var _a, _b, _c;
     onErrorHandler(error, {
       location: dataRouterState.location,
       params: (_c = (_b = (_a = dataRouterState.matches) == null ? void 0 : _a[0]) == null ? void 0 : _b.params) != null ? _c : {},
-      unstable_pattern: getRoutePattern(dataRouterState.matches),
+      pattern: getRoutePattern(dataRouterState.matches),
       errorInfo
     });
   } : void 0;
@@ -13259,21 +13403,28 @@ function warningOnce(key, cond, message) {
     warning(false, message);
   }
 }
-reactExports.memo(DataRoutes);
-function DataRoutes({
+reactExports.memo(DataRoutes2);
+function DataRoutes2({
   routes,
+  manifest,
   future,
   state,
+  isStatic,
   onError
 }) {
-  return useRoutesImpl(routes, void 0, state, onError, future);
+  return useRoutesImpl(routes, void 0, {
+    manifest,
+    state,
+    isStatic,
+    onError
+  });
 }
 function MemoryRouter({
   basename: basename2,
   children,
   initialEntries,
   initialIndex,
-  unstable_useTransitions
+  useTransitions
 }) {
   let historyRef = reactExports.useRef();
   if (historyRef.current == null) {
@@ -13290,13 +13441,13 @@ function MemoryRouter({
   });
   let setState = reactExports.useCallback(
     (newState) => {
-      if (unstable_useTransitions === false) {
+      if (useTransitions === false) {
         setStateImpl(newState);
       } else {
         reactExports.startTransition(() => setStateImpl(newState));
       }
     },
-    [unstable_useTransitions]
+    [useTransitions]
   );
   reactExports.useLayoutEffect(() => history.listen(setState), [history, setState]);
   return /* @__PURE__ */ reactExports.createElement(
@@ -13307,7 +13458,7 @@ function MemoryRouter({
       location: state.location,
       navigationType: state.action,
       navigator: history,
-      unstable_useTransitions
+      useTransitions
     }
   );
 }
@@ -13323,7 +13474,7 @@ function Navigate({
     // the router loaded. We can help them understand how to avoid that.
     `<Navigate> may be used only in the context of a <Router> component.`
   );
-  let { static: isStatic } = reactExports.useContext(NavigationContext);
+  let { static: isStatic, navigator } = reactExports.useContext(NavigationContext);
   warning(
     !isStatic,
     `<Navigate> must not be used on the initial render in a <StaticRouter>. This is a no-op, but you should modify your code so the <Navigate> is only ever rendered in response to some user interaction or state change.`
@@ -13336,6 +13487,12 @@ function Navigate({
     getResolveToMatches(matches),
     locationPathname,
     relative === "path"
+  );
+  validateNavigationTarget(
+    typeof to === "string" ? to : createPath(to),
+    navigator.createHref(path),
+    getNavigatorCurrentUrl(navigator),
+    "reject"
   );
   let jsonPath = JSON.stringify(path);
   reactExports.useEffect(() => {
@@ -13356,7 +13513,7 @@ function Router({
   navigationType = "POP",
   navigator,
   static: staticProp = false,
-  unstable_useTransitions
+  useTransitions
 }) {
   invariant(
     !useInRouterContext(),
@@ -13368,10 +13525,10 @@ function Router({
       basename: basename2,
       navigator,
       static: staticProp,
-      unstable_useTransitions,
+      useTransitions,
       future: {}
     }),
-    [basename2, navigator, staticProp, unstable_useTransitions]
+    [basename2, navigator, staticProp, useTransitions]
   );
   if (typeof locationProp === "string") {
     locationProp = parsePath(locationProp);
@@ -13381,7 +13538,8 @@ function Router({
     search: search2 = "",
     hash = "",
     state = null,
-    key = "default"
+    key = "default",
+    mask
   } = locationProp;
   let locationContext = reactExports.useMemo(() => {
     let trailingPathname = stripBasename(pathname, basename2);
@@ -13394,11 +13552,12 @@ function Router({
         search: search2,
         hash,
         state,
-        key
+        key,
+        mask
       },
       navigationType
     };
-  }, [basename2, pathname, search2, hash, state, key, navigationType]);
+  }, [basename2, pathname, search2, hash, state, key, navigationType, mask]);
   warning(
     locationContext != null,
     `<Router basename="${basename2}"> is not able to match the URL "${pathname}${search2}${hash}" because it does not start with the basename, so the <Router> won't render anything.`
@@ -13591,9 +13750,9 @@ function singleFetchUrl(reqUrl, basename2, trailingSlashAware, extension2) {
     if (url.pathname === "/") {
       url.pathname = `_root.${extension2}`;
     } else if (basename2 && stripBasename(url.pathname, basename2) === "/") {
-      url.pathname = `${basename2.replace(/\/$/, "")}/_root.${extension2}`;
+      url.pathname = `${removeTrailingSlash(basename2)}/_root.${extension2}`;
     } else {
-      url.pathname = `${url.pathname.replace(/\/$/, "")}.${extension2}`;
+      url.pathname = `${removeTrailingSlash(url.pathname)}.${extension2}`;
     }
   }
   return url;
@@ -13836,6 +13995,8 @@ function composeEventHandlers(theirHandler, ourHandler) {
 }
 function PrefetchPageLinks(_a) {
   var _b = _a, { page } = _b, linkProps = __objRest(_b, ["page"]);
+  let rsc = useIsRSCRouterContext();
+  let { nonce: contextNonce } = useFrameworkContext();
   let { router } = useDataRouterContext2();
   let matches = reactExports.useMemo(
     () => matchRoutes(router.routes, page, router.basename),
@@ -13843,6 +14004,12 @@ function PrefetchPageLinks(_a) {
   );
   if (!matches) {
     return null;
+  }
+  if (linkProps.nonce == null && contextNonce) {
+    linkProps = __spreadProps(__spreadValues({}, linkProps), { nonce: contextNonce });
+  }
+  if (rsc) {
+    return /* @__PURE__ */ reactExports.createElement(RSCPrefetchPageLinksImpl, __spreadValues({ page, matches }, linkProps));
   }
   return /* @__PURE__ */ reactExports.createElement(PrefetchPageLinksImpl, __spreadValues({ page, matches }, linkProps));
 }
@@ -13864,11 +14031,54 @@ function useKeyedPrefetchLinks(matches) {
   }, [matches, manifest, routeModules]);
   return keyedPrefetchLinks;
 }
-function PrefetchPageLinksImpl(_c) {
+function RSCPrefetchPageLinksImpl(_c) {
   var _d = _c, {
     page,
     matches: nextMatches
   } = _d, linkProps = __objRest(_d, [
+    "page",
+    "matches"
+  ]);
+  let location = useLocation();
+  let { future } = useFrameworkContext();
+  let { basename: basename2 } = useDataRouterContext2();
+  let dataHrefs = reactExports.useMemo(() => {
+    if (page === location.pathname + location.search + location.hash) {
+      return [];
+    }
+    let url = singleFetchUrl(
+      page,
+      basename2,
+      future.v8_trailingSlashAwareDataRequests,
+      "rsc"
+    );
+    let hasSomeRoutesWithShouldRevalidate = false;
+    let targetRoutes = [];
+    for (let match of nextMatches) {
+      if (typeof match.route.shouldRevalidate === "function") {
+        hasSomeRoutesWithShouldRevalidate = true;
+      } else {
+        targetRoutes.push(match.route.id);
+      }
+    }
+    if (hasSomeRoutesWithShouldRevalidate && targetRoutes.length > 0) {
+      url.searchParams.set("_routes", targetRoutes.join(","));
+    }
+    return [url.pathname + url.search];
+  }, [
+    basename2,
+    future.v8_trailingSlashAwareDataRequests,
+    page,
+    location,
+    nextMatches
+  ]);
+  return /* @__PURE__ */ reactExports.createElement(reactExports.Fragment, null, dataHrefs.map((href) => /* @__PURE__ */ reactExports.createElement("link", __spreadValues({ key: href, rel: "prefetch", as: "fetch", href }, linkProps))));
+}
+function PrefetchPageLinksImpl(_e) {
+  var _f = _e, {
+    page,
+    matches: nextMatches
+  } = _f, linkProps = __objRest(_f, [
     "page",
     "matches"
   ]);
@@ -13924,7 +14134,7 @@ function PrefetchPageLinksImpl(_c) {
     let url = singleFetchUrl(
       page,
       basename2,
-      future.unstable_trailingSlashAwareDataRequests,
+      future.v8_trailingSlashAwareDataRequests,
       "data"
     );
     if (foundOptOutRoute && routesParams.size > 0) {
@@ -13936,7 +14146,7 @@ function PrefetchPageLinksImpl(_c) {
     return [url.pathname + url.search];
   }, [
     basename2,
-    future.unstable_trailingSlashAwareDataRequests,
+    future.v8_trailingSlashAwareDataRequests,
     loaderData,
     location,
     manifest,
@@ -13982,58 +14192,74 @@ var isBrowser2 = typeof window !== "undefined" && typeof window.document !== "un
 try {
   if (isBrowser2) {
     window.__reactRouterVersion = // @ts-expect-error
-    "7.13.0";
+    "7.18.4";
   }
 } catch (e) {
 }
-var ABSOLUTE_URL_REGEX2 = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
 var Link = reactExports.forwardRef(
-  function LinkWithRef(_e, forwardedRef) {
-    var _f = _e, {
+  function LinkWithRef(_g, forwardedRef) {
+    var _h = _g, {
       onClick,
       discover = "render",
       prefetch = "none",
       relative,
       reloadDocument,
       replace: replace2,
+      mask,
       state,
       target,
       to,
       preventScrollReset,
       viewTransition,
-      unstable_defaultShouldRevalidate
-    } = _f, rest = __objRest(_f, [
+      defaultShouldRevalidate
+    } = _h, rest = __objRest(_h, [
       "onClick",
       "discover",
       "prefetch",
       "relative",
       "reloadDocument",
       "replace",
+      "mask",
       "state",
       "target",
       "to",
       "preventScrollReset",
       "viewTransition",
-      "unstable_defaultShouldRevalidate"
+      "defaultShouldRevalidate"
     ]);
-    let { basename: basename2, unstable_useTransitions } = reactExports.useContext(NavigationContext);
-    let isAbsolute = typeof to === "string" && ABSOLUTE_URL_REGEX2.test(to);
+    let { basename: basename2, navigator, useTransitions } = reactExports.useContext(NavigationContext);
+    let isAbsolute = typeof to === "string" && ABSOLUTE_URL_REGEX.test(to);
     let parsed = parseToInfo(to, basename2);
     to = parsed.to;
     let href = useHref(to, { relative });
+    let location = useLocation();
+    let maskedHref = null;
+    if (mask) {
+      let resolved = resolveTo(
+        mask,
+        [],
+        location.mask ? location.mask.pathname : "/",
+        true
+      );
+      if (basename2 !== "/") {
+        resolved.pathname = resolved.pathname === "/" ? basename2 : joinPaths([basename2, resolved.pathname]);
+      }
+      maskedHref = navigator.createHref(resolved);
+    }
     let [shouldPrefetch, prefetchRef, prefetchHandlers] = usePrefetchBehavior(
       prefetch,
       rest
     );
     let internalOnClick = useLinkClickHandler(to, {
       replace: replace2,
+      mask,
       state,
       target,
       preventScrollReset,
       relative,
       viewTransition,
-      unstable_defaultShouldRevalidate,
-      unstable_useTransitions
+      defaultShouldRevalidate,
+      useTransitions
     });
     function handleClick(event) {
       if (onClick) onClick(event);
@@ -14041,13 +14267,14 @@ var Link = reactExports.forwardRef(
         internalOnClick(event);
       }
     }
+    let isSpaLink = !(parsed.isExternal || reloadDocument);
     let link2 = (
       // eslint-disable-next-line jsx-a11y/anchor-has-content
       /* @__PURE__ */ reactExports.createElement(
         "a",
         __spreadProps(__spreadValues(__spreadValues({}, rest), prefetchHandlers), {
-          href: parsed.absoluteURL || href,
-          onClick: parsed.isExternal || reloadDocument ? onClick : handleClick,
+          href: (isSpaLink ? maskedHref : void 0) || parsed.absoluteURL || href,
+          onClick: isSpaLink ? handleClick : onClick,
           ref: mergeRefs(forwardedRef, prefetchRef),
           target,
           "data-discover": !isAbsolute && discover === "render" ? "true" : void 0
@@ -14059,8 +14286,8 @@ var Link = reactExports.forwardRef(
 );
 Link.displayName = "Link";
 var NavLink = reactExports.forwardRef(
-  function NavLinkWithRef(_g, ref) {
-    var _h = _g, {
+  function NavLinkWithRef(_i, ref) {
+    var _j = _i, {
       "aria-current": ariaCurrentProp = "page",
       caseSensitive = false,
       className: classNameProp = "",
@@ -14069,7 +14296,7 @@ var NavLink = reactExports.forwardRef(
       to,
       viewTransition,
       children
-    } = _h, rest = __objRest(_h, [
+    } = _j, rest = __objRest(_j, [
       "aria-current",
       "caseSensitive",
       "className",
@@ -14134,8 +14361,8 @@ var NavLink = reactExports.forwardRef(
 );
 NavLink.displayName = "NavLink";
 var Form = reactExports.forwardRef(
-  (_i, forwardedRef) => {
-    var _j = _i, {
+  (_k, forwardedRef) => {
+    var _l = _k, {
       discover = "render",
       fetcherKey,
       navigate,
@@ -14148,8 +14375,8 @@ var Form = reactExports.forwardRef(
       relative,
       preventScrollReset,
       viewTransition,
-      unstable_defaultShouldRevalidate
-    } = _j, props = __objRest(_j, [
+      defaultShouldRevalidate
+    } = _l, props = __objRest(_l, [
       "discover",
       "fetcherKey",
       "navigate",
@@ -14162,13 +14389,13 @@ var Form = reactExports.forwardRef(
       "relative",
       "preventScrollReset",
       "viewTransition",
-      "unstable_defaultShouldRevalidate"
+      "defaultShouldRevalidate"
     ]);
-    let { unstable_useTransitions } = reactExports.useContext(NavigationContext);
+    let { useTransitions } = reactExports.useContext(NavigationContext);
     let submit = useSubmit();
     let formAction = useFormAction(action, { relative });
     let formMethod = method.toLowerCase() === "get" ? "get" : "post";
-    let isAbsolute = typeof action === "string" && ABSOLUTE_URL_REGEX2.test(action);
+    let isAbsolute = typeof action === "string" && ABSOLUTE_URL_REGEX.test(action);
     let submitHandler = (event) => {
       onSubmit && onSubmit(event);
       if (event.defaultPrevented) return;
@@ -14184,9 +14411,9 @@ var Form = reactExports.forwardRef(
         relative,
         preventScrollReset,
         viewTransition,
-        unstable_defaultShouldRevalidate
+        defaultShouldRevalidate
       });
-      if (unstable_useTransitions && navigate !== false) {
+      if (useTransitions && navigate !== false) {
         reactExports.startTransition(() => doSubmit());
       } else {
         doSubmit();
@@ -14217,12 +14444,13 @@ function useDataRouterContext3(hookName) {
 function useLinkClickHandler(to, {
   target,
   replace: replaceProp,
+  mask,
   state,
   preventScrollReset,
   relative,
   viewTransition,
-  unstable_defaultShouldRevalidate,
-  unstable_useTransitions
+  defaultShouldRevalidate,
+  useTransitions
 } = {}) {
   let navigate = useNavigate();
   let location = useLocation();
@@ -14234,13 +14462,14 @@ function useLinkClickHandler(to, {
         let replace2 = replaceProp !== void 0 ? replaceProp : createPath(location) === createPath(path);
         let doNavigate = () => navigate(to, {
           replace: replace2,
+          mask,
           state,
           preventScrollReset,
           relative,
           viewTransition,
-          unstable_defaultShouldRevalidate
+          defaultShouldRevalidate
         });
-        if (unstable_useTransitions) {
+        if (useTransitions) {
           reactExports.startTransition(() => doNavigate());
         } else {
           doNavigate();
@@ -14252,14 +14481,15 @@ function useLinkClickHandler(to, {
       navigate,
       path,
       replaceProp,
+      mask,
       state,
       target,
       to,
       preventScrollReset,
       relative,
       viewTransition,
-      unstable_defaultShouldRevalidate,
-      unstable_useTransitions
+      defaultShouldRevalidate,
+      useTransitions
     ]
   );
 }
@@ -14283,7 +14513,7 @@ function useSubmit() {
       if (options.navigate === false) {
         let key = options.fetcherKey || getUniqueFetcherId();
         await routerFetch(key, currentRouteId, options.action || action, {
-          unstable_defaultShouldRevalidate: options.unstable_defaultShouldRevalidate,
+          defaultShouldRevalidate: options.defaultShouldRevalidate,
           preventScrollReset: options.preventScrollReset,
           formData,
           body,
@@ -14293,7 +14523,7 @@ function useSubmit() {
         });
       } else {
         await routerNavigate(options.action || action, {
-          unstable_defaultShouldRevalidate: options.unstable_defaultShouldRevalidate,
+          defaultShouldRevalidate: options.defaultShouldRevalidate,
           preventScrollReset: options.preventScrollReset,
           formData,
           body,
@@ -14387,8 +14617,8 @@ const hasA11yProp = (props) => {
   return false;
 };
 const Icon = reactExports.forwardRef(
-  (_k, ref) => {
-    var _l = _k, {
+  (_m, ref) => {
+    var _n = _m, {
       color: color2 = "currentColor",
       size = 24,
       strokeWidth = 2,
@@ -14396,7 +14626,7 @@ const Icon = reactExports.forwardRef(
       className = "",
       children,
       iconNode
-    } = _l, rest = __objRest(_l, [
+    } = _n, rest = __objRest(_n, [
       "color",
       "size",
       "strokeWidth",
@@ -14441,7 +14671,12 @@ const createLucideIcon = (iconName, iconNode) => {
   Component.displayName = toPascalCase(iconName);
   return Component;
 };
-const __iconNode$d = [
+const __iconNode$i = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
+];
+const ArrowRight = createLucideIcon("arrow-right", __iconNode$i);
+const __iconNode$h = [
   [
     "path",
     {
@@ -14462,8 +14697,8 @@ const __iconNode$d = [
   ["circle", { cx: "20", cy: "21", r: ".5", key: "yhc1fs" }],
   ["circle", { cx: "20", cy: "8", r: ".5", key: "1e43v0" }]
 ];
-const BrainCircuit = createLucideIcon("brain-circuit", __iconNode$d);
-const __iconNode$c = [
+const BrainCircuit = createLucideIcon("brain-circuit", __iconNode$h);
+const __iconNode$g = [
   ["path", { d: "M12 18V5", key: "adv99a" }],
   ["path", { d: "M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4", key: "1e3is1" }],
   ["path", { d: "M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5", key: "1gqd8o" }],
@@ -14473,31 +14708,38 @@ const __iconNode$c = [
   ["path", { d: "M6 18a4 4 0 0 1-2-7.464", key: "k1g0md" }],
   ["path", { d: "M6.003 5.125a4 4 0 0 0-2.526 5.77", key: "q97ue3" }]
 ];
-const Brain = createLucideIcon("brain", __iconNode$c);
-const __iconNode$b = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
-const ChevronDown = createLucideIcon("chevron-down", __iconNode$b);
-const __iconNode$a = [["path", { d: "m18 15-6-6-6 6", key: "153udz" }]];
-const ChevronUp = createLucideIcon("chevron-up", __iconNode$a);
-const __iconNode$9 = [
+const Brain = createLucideIcon("brain", __iconNode$g);
+const __iconNode$f = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
+const Check = createLucideIcon("check", __iconNode$f);
+const __iconNode$e = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
+const ChevronDown = createLucideIcon("chevron-down", __iconNode$e);
+const __iconNode$d = [["path", { d: "m18 15-6-6-6 6", key: "153udz" }]];
+const ChevronUp = createLucideIcon("chevron-up", __iconNode$d);
+const __iconNode$c = [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
   ["line", { x1: "12", x2: "12", y1: "8", y2: "12", key: "1pkeuh" }],
   ["line", { x1: "12", x2: "12.01", y1: "16", y2: "16", key: "4dfq90" }]
 ];
-const CircleAlert = createLucideIcon("circle-alert", __iconNode$9);
-const __iconNode$8 = [
+const CircleAlert = createLucideIcon("circle-alert", __iconNode$c);
+const __iconNode$b = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+];
+const CircleCheck = createLucideIcon("circle-check", __iconNode$b);
+const __iconNode$a = [
   ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
   ["path", { d: "M10 14 21 3", key: "gplh6r" }],
   ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
 ];
-const ExternalLink = createLucideIcon("external-link", __iconNode$8);
-const __iconNode$7 = [
+const ExternalLink = createLucideIcon("external-link", __iconNode$a);
+const __iconNode$9 = [
   ["rect", { width: "7", height: "7", x: "3", y: "3", rx: "1", key: "1g98yp" }],
   ["rect", { width: "7", height: "7", x: "14", y: "3", rx: "1", key: "6d4xhi" }],
   ["rect", { width: "7", height: "7", x: "14", y: "14", rx: "1", key: "nxv5o0" }],
   ["rect", { width: "7", height: "7", x: "3", y: "14", rx: "1", key: "1bb6yr" }]
 ];
-const LayoutGrid = createLucideIcon("layout-grid", __iconNode$7);
-const __iconNode$6 = [
+const LayoutGrid = createLucideIcon("layout-grid", __iconNode$9);
+const __iconNode$8 = [
   [
     "path",
     {
@@ -14506,26 +14748,36 @@ const __iconNode$6 = [
     }
   ]
 ];
-const MessageSquare = createLucideIcon("message-square", __iconNode$6);
-const __iconNode$5 = [
+const MessageSquare = createLucideIcon("message-square", __iconNode$8);
+const __iconNode$7 = [
   ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
   ["path", { d: "M15 3v18", key: "14nvp0" }],
   ["path", { d: "m8 9 3 3-3 3", key: "12hl5m" }]
 ];
-const PanelRightClose = createLucideIcon("panel-right-close", __iconNode$5);
-const __iconNode$4 = [
+const PanelRightClose = createLucideIcon("panel-right-close", __iconNode$7);
+const __iconNode$6 = [
+  [
+    "path",
+    {
+      d: "M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z",
+      key: "10ikf1"
+    }
+  ]
+];
+const Play = createLucideIcon("play", __iconNode$6);
+const __iconNode$5 = [
   ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
   ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
   ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
   ["path", { d: "M8 16H3v5", key: "1cv678" }]
 ];
-const RefreshCw = createLucideIcon("refresh-cw", __iconNode$4);
-const __iconNode$3 = [
+const RefreshCw = createLucideIcon("refresh-cw", __iconNode$5);
+const __iconNode$4 = [
   ["path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8", key: "1357e3" }],
   ["path", { d: "M3 3v5h5", key: "1xhq8a" }]
 ];
-const RotateCcw = createLucideIcon("rotate-ccw", __iconNode$3);
-const __iconNode$2 = [
+const RotateCcw = createLucideIcon("rotate-ccw", __iconNode$4);
+const __iconNode$3 = [
   [
     "path",
     {
@@ -14535,8 +14787,8 @@ const __iconNode$2 = [
   ],
   ["path", { d: "m21.854 2.147-10.94 10.939", key: "12cjpa" }]
 ];
-const Send = createLucideIcon("send", __iconNode$2);
-const __iconNode$1 = [
+const Send = createLucideIcon("send", __iconNode$3);
+const __iconNode$2 = [
   [
     "path",
     {
@@ -14546,12 +14798,17 @@ const __iconNode$1 = [
   ],
   ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
 ];
-const Settings = createLucideIcon("settings", __iconNode$1);
-const __iconNode = [
+const Settings = createLucideIcon("settings", __iconNode$2);
+const __iconNode$1 = [
   ["path", { d: "M16 17h6v-6", key: "t6n2it" }],
   ["path", { d: "m22 17-8.5-8.5-5 5L2 7", key: "x473p" }]
 ];
-const TrendingDown = createLucideIcon("trending-down", __iconNode);
+const TrendingDown = createLucideIcon("trending-down", __iconNode$1);
+const __iconNode = [
+  ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
+  ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
+];
+const X = createLucideIcon("x", __iconNode);
 const createStoreImpl = (createState2) => {
   let state;
   const listeners = /* @__PURE__ */ new Set();
@@ -14779,6 +15036,26 @@ class ExtensionBridge {
       console.error("Error recomputing tracking:", error);
       throw error;
     }
+  }
+  async generateQuiz(topicId, questionCount) {
+    await this.waitForReady();
+    const result = await this.sendMessage({
+      action: "generateQuiz",
+      topicId,
+      questionCount
+    });
+    if (!result.success) throw new Error(result.error || "Failed to generate quiz");
+    return result.data;
+  }
+  async submitQuiz(quizSetId, answers) {
+    await this.waitForReady();
+    const result = await this.sendMessage({
+      action: "submitQuiz",
+      quizSetId,
+      answers
+    });
+    if (!result.success) throw new Error(result.error || "Failed to submit quiz");
+    return result.data;
   }
   /**
    * Get extension configuration
@@ -25135,39 +25412,23 @@ function SessionView() {
     }
   ) });
 }
-function QuizView() {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center h-full gap-5", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-5 rounded-2xl bg-accent-subtle", children: /* @__PURE__ */ jsxRuntimeExports.jsx(BrainCircuit, { size: 40, strokeWidth: 1.2, className: "text-accent" }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center space-y-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-base font-semibold text-text", children: "Quiz & Flashcards" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-text-tertiary max-w-md leading-relaxed", children: "Create quizzes and flashcards based on your explored topics to reinforce learning through spaced repetition." })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs font-medium text-accent bg-accent-subtle px-3 py-1.5 rounded-lg", children: "Coming soon" })
-  ] });
-}
 const useTrackingStore = create$1((set, get) => ({
   topics: [],
   isLoading: false,
   isRecomputing: false,
   error: null,
-  showDueOnly: false,
   topicHistories: {},
   loadingHistories: /* @__PURE__ */ new Set(),
-  selectedTopicId: null,
   loadTopics: async () => {
     var _a;
     try {
       set({ isLoading: true, error: null });
       await extensionBridge.waitForExtensionServices();
-      const response = await extensionBridge.getTrackedTopics(get().showDueOnly);
+      const response = await extensionBridge.getTrackedTopics();
       set({ topics: (_a = response.topics) != null ? _a : [], isLoading: false });
     } catch (error) {
       set({ error: error instanceof Error ? error.message : "Unknown error", isLoading: false });
     }
-  },
-  toggleDueOnly: async () => {
-    set((state) => ({ showDueOnly: !state.showDueOnly }));
-    await get().loadTopics();
   },
   recompute: async () => {
     try {
@@ -25194,21 +25455,594 @@ const useTrackingStore = create$1((set, get) => ({
         loadingHistories: new Set([...state.loadingHistories].filter((id) => id !== topicId))
       }));
     }
-  },
-  selectTopic: (topicId) => {
-    set({ selectedTopicId: topicId });
   }
 }));
-const TOPIC_COLORS = [
-  "#6366f1",
-  "#ec4899",
-  "#f97316",
-  "#14b8a6",
-  "#84cc16",
-  "#eab308",
-  "#06b6d4",
-  "#a855f7"
-];
+const useQuizStore = create$1((set, get) => ({
+  phase: "select",
+  topicId: null,
+  topicName: null,
+  questionCount: 5,
+  quiz: null,
+  currentIndex: 0,
+  answers: {},
+  result: null,
+  error: null,
+  setQuestionCount: (count) => set({ questionCount: count }),
+  startQuiz: async (topicId, topicName) => {
+    set({
+      phase: "generating",
+      topicId,
+      topicName,
+      quiz: null,
+      currentIndex: 0,
+      answers: {},
+      result: null,
+      error: null
+    });
+    try {
+      const quiz = await extensionBridge.generateQuiz(topicId, get().questionCount);
+      if (get().topicId !== topicId || get().phase !== "generating") return;
+      if (quiz.questions.length === 0) throw new Error("No questions were generated");
+      set({ quiz, phase: "answering" });
+    } catch (error) {
+      if (get().topicId !== topicId) return;
+      set({ phase: "error", error: error instanceof Error ? error.message : "Unknown error" });
+    }
+  },
+  // An answer is final once picked: the correction is shown right away
+  selectAnswer: (answer) => {
+    const { quiz, currentIndex, answers } = get();
+    const question = quiz == null ? void 0 : quiz.questions[currentIndex];
+    if (!question || answers[question.id] !== void 0) return;
+    set({ answers: __spreadProps(__spreadValues({}, answers), { [question.id]: answer }) });
+  },
+  next: async () => {
+    const { quiz, currentIndex, answers } = get();
+    if (!quiz) return;
+    if (currentIndex < quiz.questions.length - 1) {
+      set({ currentIndex: currentIndex + 1 });
+      return;
+    }
+    try {
+      set({ phase: "submitting" });
+      const result = await extensionBridge.submitQuiz(
+        quiz.quiz_set_id,
+        Object.entries(answers).map(([questionId, answer]) => ({ question_id: Number(questionId), answer }))
+      );
+      set({ result, phase: "results" });
+      useTrackingStore.getState().loadTopics();
+    } catch (error) {
+      set({ phase: "error", error: error instanceof Error ? error.message : "Unknown error" });
+    }
+  },
+  reset: () => set({
+    phase: "select",
+    topicId: null,
+    topicName: null,
+    quiz: null,
+    currentIndex: 0,
+    answers: {},
+    result: null,
+    error: null
+  })
+}));
+const DAY_MS = 864e5;
+const CHART = {
+  accent: "#6366F1",
+  context: "#3D4255",
+  grid: "rgba(255, 255, 255, 0.06)",
+  surface: "#10131A",
+  textMuted: "#5F6575",
+  textSecondary: "#9BA1B0"
+};
+function retentionAt(daysSinceReview, stabilityDays) {
+  return Math.exp(-Math.max(0, daysSinceReview) / Math.max(0.1, stabilityDays));
+}
+function daysSince(dateStr, now = Date.now()) {
+  return (now - new Date(dateStr).getTime()) / DAY_MS;
+}
+function isDue(topic, now = Date.now()) {
+  return !!topic.next_review_at && new Date(topic.next_review_at).getTime() <= now;
+}
+function retentionPct(topic) {
+  return Math.round((1 - topic.forgetting_score) * 100);
+}
+function useElementWidth() {
+  const [width, setWidth] = reactExports.useState(0);
+  const observerRef = reactExports.useRef(null);
+  const ref = reactExports.useCallback((node2) => {
+    var _a;
+    (_a = observerRef.current) == null ? void 0 : _a.disconnect();
+    observerRef.current = null;
+    if (!node2) return;
+    const observer = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
+    observer.observe(node2);
+    observerRef.current = observer;
+  }, []);
+  reactExports.useEffect(() => () => {
+    var _a;
+    return (_a = observerRef.current) == null ? void 0 : _a.disconnect();
+  }, []);
+  return { ref, width };
+}
+const QUESTION_COUNTS = [5, 10];
+function Header({ title, right }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-line shrink-0", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 min-w-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(BrainCircuit, { size: 16, className: "text-accent shrink-0" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-sm font-semibold text-text truncate", children: title })
+    ] }),
+    right
+  ] });
+}
+function CenteredMessage({ icon, title, children }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center flex-1 gap-4 text-center px-6", children: [
+    icon,
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-text", children: title }),
+      children
+    ] })
+  ] });
+}
+function TopicPicker() {
+  const { topics, isLoading, error, loadTopics } = useTrackingStore();
+  const { questionCount, setQuestionCount, startQuiz } = useQuizStore();
+  reactExports.useEffect(() => {
+    if (topics.length === 0) loadTopics();
+  }, []);
+  const sorted = [...topics].sort((a, b) => {
+    const dueDiff = Number(isDue(b)) - Number(isDue(a));
+    return dueDiff !== 0 ? dueDiff : b.forgetting_score - a.forgetting_score;
+  });
+  const countPicker = /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-1 bg-surface rounded-lg p-0.5", children: QUESTION_COUNTS.map((n) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "button",
+    {
+      onClick: () => setQuestionCount(n),
+      className: `text-xxs font-medium px-2.5 py-1 rounded-md transition-colors ${questionCount === n ? "bg-accent text-white" : "text-text-secondary hover:text-text"}`,
+      children: [
+        n,
+        " questions"
+      ]
+    },
+    n
+  )) });
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Header, { title: "Quiz", right: countPicker }),
+    isLoading && topics.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(CenteredMessage, { icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 20, className: "text-accent animate-spin" }), title: "Loading topics…" }) : error ? /* @__PURE__ */ jsxRuntimeExports.jsx(CenteredMessage, { icon: /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingDown, { size: 32, strokeWidth: 1.2, className: "text-error" }), title: error, children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: loadTopics, className: "text-xs text-accent hover:text-accent-hover transition-colors", children: "Retry" }) }) : sorted.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+      CenteredMessage,
+      {
+        icon: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-5 rounded-2xl bg-accent-subtle", children: /* @__PURE__ */ jsxRuntimeExports.jsx(BrainCircuit, { size: 36, strokeWidth: 1.2, className: "text-accent" }) }),
+        title: "No topics to quiz yet",
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-text-tertiary max-w-xs leading-relaxed", children: "Analyze a browsing session: learning topics will show up here." })
+      }
+    ) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto thin-scrollbar", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "px-5 pt-5 pb-2 text-xs text-text-tertiary leading-relaxed", children: "Pick a topic to test yourself. Your score updates its memory curve: a good score pushes the next review further away." }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-t border-line", children: sorted.map((topic) => /* @__PURE__ */ jsxRuntimeExports.jsx(TopicPickRow, { topic, onStart: () => startQuiz(topic.topic_id, topic.name) }, topic.topic_id)) })
+    ] })
+  ] });
+}
+function TopicPickRow({ topic, onStart }) {
+  const due = isDue(topic);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "button",
+    {
+      onClick: onStart,
+      className: "group w-full px-5 py-3 flex items-center gap-3 border-b border-line hover:bg-surface-hover transition-colors text-left",
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1 text-sm font-medium text-text truncate min-w-0", title: topic.name, children: topic.name }),
+        due && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-xxs font-semibold text-error/75 bg-error/8 px-1.5 py-0.5 rounded-full", children: "Due" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-semibold w-9 text-right shrink-0 text-text-secondary", children: [
+          retentionPct(topic),
+          "%"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 12, className: "shrink-0 text-text-tertiary group-hover:text-accent transition-colors" })
+      ]
+    }
+  );
+}
+function QuestionCard() {
+  const { quiz, currentIndex, answers, topicName, phase, selectAnswer, next, reset } = useQuizStore();
+  if (!quiz) return null;
+  const question = quiz.questions[currentIndex];
+  const picked = answers[question.id];
+  const hasAnswered = picked !== void 0;
+  const isLast = currentIndex === quiz.questions.length - 1;
+  const progress = (currentIndex + (hasAnswered ? 1 : 0)) / quiz.questions.length * 100;
+  function optionClass(option) {
+    const base = "w-full text-left px-4 py-3 rounded-xl border text-sm transition-colors flex items-center gap-3";
+    if (!hasAnswered) return `${base} border-line bg-surface/40 text-text hover:bg-surface-hover hover:border-line-strong`;
+    if (option === question.answer) return `${base} border-success/50 bg-success/10 text-text`;
+    if (option === picked) return `${base} border-error/50 bg-error/10 text-text`;
+    return `${base} border-line bg-transparent text-text-tertiary`;
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Header,
+      {
+        title: topicName != null ? topicName : "Quiz",
+        right: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: reset, className: "text-xxs font-medium px-3 py-1.5 rounded-lg bg-surface text-text-secondary hover:bg-surface-hover transition-colors", children: "Quit" })
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-0.5 bg-surface-active shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-full bg-accent transition-all duration-300", style: { width: `${progress}%` } }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto thin-scrollbar px-5 py-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-xl mx-auto flex flex-col gap-5", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xxs font-semibold text-text-tertiary uppercase tracking-wide", children: [
+          "Question ",
+          currentIndex + 1,
+          " / ",
+          quiz.questions.length
+        ] }),
+        question.difficulty && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs text-text-tertiary bg-surface px-1.5 py-0.5 rounded-full capitalize", children: question.difficulty })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-base font-medium text-text leading-relaxed", children: question.question }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-2", children: question.options.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: () => selectAnswer(option), disabled: hasAnswered, className: optionClass(option), children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1", children: option }),
+        hasAnswered && option === question.answer && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 14, className: "text-success shrink-0" }),
+        hasAnswered && option === picked && option !== question.answer && /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14, className: "text-error shrink-0" })
+      ] }, option)) }),
+      hasAnswered && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `text-xs font-medium ${picked === question.answer ? "text-success" : "text-error/80"}`, children: picked === question.answer ? "Correct!" : "Not quite: the right answer is highlighted." }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: next,
+            disabled: phase === "submitting",
+            className: "flex items-center gap-1.5 text-xs font-medium px-4 py-2 rounded-lg bg-accent text-white hover:bg-accent-hover transition-colors disabled:opacity-50 shrink-0",
+            children: phase === "submitting" ? /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12, className: "animate-spin" }) : isLast ? "See results" : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              "Next ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { size: 12 })
+            ] })
+          }
+        )
+      ] })
+    ] }) })
+  ] });
+}
+function Results() {
+  const navigate = useNavigate();
+  const { quiz, result, answers, topicId, topicName, startQuiz, reset } = useQuizStore();
+  if (!quiz || !result) return null;
+  const correct = result.results.filter((r) => r.is_correct).length;
+  const pct = Math.round(result.score * 100);
+  const passed = result.score >= 0.6;
+  const nextReview = result.next_review_at ? new Date(result.next_review_at).toLocaleDateString(void 0, { weekday: "short", month: "short", day: "numeric" }) : null;
+  const outcomeById = Object.fromEntries(result.results.map((r) => [r.question_id, r]));
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Header, { title: topicName != null ? topicName : "Quiz" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto thin-scrollbar px-5 py-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-xl mx-auto flex flex-col gap-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-5 py-5 rounded-xl bg-bg-raised border border-line flex items-center gap-5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-5xl font-semibold text-text", children: [
+            pct,
+            "%"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-text-tertiary mt-1", children: [
+            correct,
+            " / ",
+            result.total_items,
+            " correct"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `text-sm font-medium ${passed ? "text-success" : "text-error/80"}`, children: passed ? "Memory strengthened" : "Needs another pass" }),
+          result.interval_days != null && nextReview && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-text-secondary mt-1 leading-relaxed", children: [
+            result.interval_days <= 1 ? "Review again tomorrow" : `Next review in ${result.interval_days} days`,
+            " · ",
+            nextReview
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs font-semibold text-text-tertiary uppercase tracking-wide", children: "Recap" }),
+        quiz.questions.map((q, i) => {
+          var _a, _b;
+          const outcome = outcomeById[q.id];
+          const ok2 = outcome == null ? void 0 : outcome.is_correct;
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-3 rounded-xl border border-line flex gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `mt-0.5 shrink-0 ${ok2 ? "text-success" : "text-error"}`, children: ok2 ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 14 }) : /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 space-y-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-text leading-relaxed", children: [
+                i + 1,
+                ". ",
+                q.question
+              ] }),
+              !ok2 && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xxs text-text-tertiary", children: [
+                "Your answer: ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-text-secondary", children: (_a = answers[q.id]) != null ? _a : "—" }),
+                " · Correct:",
+                " ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-text-secondary", children: (_b = outcome == null ? void 0 : outcome.correct_answer) != null ? _b : q.answer })
+              ] })
+            ] })
+          ] }, q.id);
+        })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2", children: [
+        topicId != null && topicName && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => startQuiz(topicId, topicName),
+            className: "flex items-center gap-1.5 text-xs font-medium px-4 py-2 rounded-lg bg-accent text-white hover:bg-accent-hover transition-colors",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(RotateCcw, { size: 12 }),
+              " New quiz on this topic"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: reset, className: "text-xs font-medium px-4 py-2 rounded-lg bg-surface text-text-secondary hover:bg-surface-hover transition-colors", children: "Other topic" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => {
+              reset();
+              navigate("/tracking");
+            },
+            className: "text-xs font-medium px-4 py-2 rounded-lg text-text-secondary hover:text-text transition-colors",
+            children: "See tracking"
+          }
+        )
+      ] })
+    ] }) })
+  ] });
+}
+function QuizView() {
+  const { phase, topicName, error, reset } = useQuizStore();
+  if (phase === "generating") {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Header, { title: topicName != null ? topicName : "Quiz" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(CenteredMessage, { icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 20, className: "text-accent animate-spin" }), title: "Generating questions…", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-text-tertiary", children: "This can take a few seconds." }) })
+    ] });
+  }
+  if (phase === "error") {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Header, { title: topicName != null ? topicName : "Quiz" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(CenteredMessage, { icon: /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingDown, { size: 32, strokeWidth: 1.2, className: "text-error" }), title: "Something went wrong", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-text-tertiary max-w-sm break-words", children: error }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: reset, className: "mt-2 text-xs text-accent hover:text-accent-hover transition-colors", children: "Back to topics" })
+      ] })
+    ] });
+  }
+  if (phase === "answering" || phase === "submitting") return /* @__PURE__ */ jsxRuntimeExports.jsx(QuestionCard, {});
+  if (phase === "results") return /* @__PURE__ */ jsxRuntimeExports.jsx(Results, {});
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(TopicPicker, {});
+}
+const HORIZON_DAYS = 30;
+const HEIGHT$1 = 220;
+const M$1 = { top: 12, right: 16, bottom: 24, left: 36 };
+const X_TICKS = [0, 7, 14, 21, 30];
+const Y_TICKS = [0, 0.25, 0.5, 0.75, 1];
+function ForgettingCurvesChart({
+  topics,
+  highlightedId,
+  onHighlight
+}) {
+  var _a;
+  const { ref, width } = useElementWidth();
+  const [hoverDay, setHoverDay] = reactExports.useState(null);
+  const curves = reactExports.useMemo(() => {
+    const now = Date.now();
+    return topics.filter((t) => t.last_reviewed_at).map((t) => ({ topic: t, age: daysSince(t.last_reviewed_at, now) }));
+  }, [topics]);
+  const plotW = Math.max(0, width - M$1.left - M$1.right);
+  const plotH = HEIGHT$1 - M$1.top - M$1.bottom;
+  const x = (day) => M$1.left + day / HORIZON_DAYS * plotW;
+  const y = (r) => M$1.top + (1 - r) * plotH;
+  const valueAt = (c, day) => retentionAt(c.age + day, c.topic.stability_days);
+  const path = (c) => {
+    const steps = 60;
+    let d = "";
+    for (let i = 0; i <= steps; i++) {
+      const day = i / steps * HORIZON_DAYS;
+      d += `${i === 0 ? "M" : "L"}${x(day).toFixed(1)},${y(valueAt(c, day)).toFixed(1)}`;
+    }
+    return d;
+  };
+  const highlighted = (_a = curves.find((c) => c.topic.topic_id === highlightedId)) != null ? _a : null;
+  function handleMove(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const day = Math.min(HORIZON_DAYS, Math.max(0, (e.clientX - rect.left) / rect.width * HORIZON_DAYS));
+    const r = 1 - (e.clientY - rect.top) / rect.height;
+    let nearest = null;
+    let best = Infinity;
+    for (const c of curves) {
+      const dist = Math.abs(valueAt(c, day) - r);
+      if (dist < best) {
+        best = dist;
+        nearest = c;
+      }
+    }
+    setHoverDay(day);
+    if (nearest) onHighlight(nearest.topic.topic_id);
+  }
+  function handleLeave() {
+    setHoverDay(null);
+    onHighlight(null);
+  }
+  if (curves.length === 0) return null;
+  const nextReviewDay = (highlighted == null ? void 0 : highlighted.topic.next_review_at) != null ? -daysSince(highlighted.topic.next_review_at) : null;
+  const tooltipValue = highlighted && hoverDay != null ? valueAt(highlighted, hoverDay) : null;
+  const tooltipLeft = hoverDay != null ? x(hoverDay) : 0;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-3", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-baseline justify-between gap-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-semibold text-text", children: "Forgetting curves" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary", children: "Projected retention over the next 30 days if nothing is reviewed" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-1.5 min-w-0", children: highlighted ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-3 h-0.5 rounded-full shrink-0", style: { backgroundColor: CHART.accent } }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs text-text-secondary truncate", children: highlighted.topic.name })
+      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs text-text-tertiary", children: "Hover a curve or a topic to highlight it" }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { ref, className: "relative w-full", style: { height: HEIGHT$1 }, children: [
+      width > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width, height: HEIGHT$1, role: "img", "aria-label": "Projected retention curves for tracked topics", children: [
+        Y_TICKS.map((t) => /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: M$1.left, x2: M$1.left + plotW, y1: y(t), y2: y(t), stroke: CHART.grid, strokeWidth: 1 }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("text", { x: M$1.left - 8, y: y(t), dy: "0.32em", textAnchor: "end", fontSize: 10, fill: CHART.textMuted, style: { fontVariantNumeric: "tabular-nums" }, children: [
+            Math.round(t * 100),
+            "%"
+          ] })
+        ] }, t)),
+        X_TICKS.map((d) => /* @__PURE__ */ jsxRuntimeExports.jsx("text", { x: x(d), y: HEIGHT$1 - 6, textAnchor: d === 0 ? "start" : d === HORIZON_DAYS ? "end" : "middle", fontSize: 10, fill: CHART.textMuted, children: d === 0 ? "Today" : `+${d}d` }, d)),
+        curves.map(
+          (c) => c.topic.topic_id === highlightedId ? null : /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: path(c), fill: "none", stroke: CHART.context, strokeWidth: 1.5, strokeLinejoin: "round", strokeLinecap: "round" }, c.topic.topic_id)
+        ),
+        highlighted && /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: path(highlighted), fill: "none", stroke: CHART.accent, strokeWidth: 2, strokeLinejoin: "round", strokeLinecap: "round" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: x(0), cy: y(valueAt(highlighted, 0)), r: 4, fill: CHART.accent, stroke: CHART.surface, strokeWidth: 2 }),
+          nextReviewDay != null && nextReviewDay > 0 && nextReviewDay <= HORIZON_DAYS && /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: x(nextReviewDay), cy: y(valueAt(highlighted, nextReviewDay)), r: 4, fill: CHART.surface, stroke: CHART.accent, strokeWidth: 2 })
+        ] }),
+        hoverDay != null && /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: x(hoverDay), x2: x(hoverDay), y1: M$1.top, y2: M$1.top + plotH, stroke: CHART.textMuted, strokeWidth: 1 }),
+        highlighted && tooltipValue != null && hoverDay != null && /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: x(hoverDay), cy: y(tooltipValue), r: 4, fill: CHART.accent, stroke: CHART.surface, strokeWidth: 2, pointerEvents: "none" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "rect",
+          {
+            x: M$1.left,
+            y: M$1.top,
+            width: plotW,
+            height: plotH,
+            fill: "transparent",
+            onMouseMove: handleMove,
+            onMouseLeave: handleLeave
+          }
+        )
+      ] }),
+      highlighted && tooltipValue != null && hoverDay != null && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "absolute top-2 pointer-events-none px-2.5 py-1.5 rounded-lg bg-bg-elevated border border-line-strong shadow-lg",
+          style: {
+            left: tooltipLeft,
+            transform: tooltipLeft > width / 2 ? "translateX(calc(-100% - 10px))" : "translateX(10px)"
+          },
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs font-medium text-text whitespace-nowrap max-w-48 truncate", children: highlighted.topic.name }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xxs text-text-secondary whitespace-nowrap", children: [
+              hoverDay < 0.5 ? "Today" : `In ${Math.round(hoverDay)}d`,
+              " · ",
+              Math.round(tooltipValue * 100),
+              "% retained"
+            ] })
+          ]
+        }
+      )
+    ] }),
+    highlighted && nextReviewDay != null && nextReviewDay > 0 && nextReviewDay <= HORIZON_DAYS && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xxs text-text-tertiary -mt-1", children: [
+      "Hollow dot: next scheduled review (",
+      Math.round(nextReviewDay),
+      "d)"
+    ] })
+  ] });
+}
+const HEIGHT = 130;
+const M = { top: 10, right: 12, bottom: 20, left: 32 };
+const MAX_PAST_DAYS = 60;
+const MIN_FUTURE_DAYS = 7;
+function TopicRetentionCurve({
+  topic,
+  events
+}) {
+  var _a;
+  const { ref, width } = useElementWidth();
+  const [hoverT, setHoverT] = reactExports.useState(null);
+  const model = reactExports.useMemo(() => {
+    const now = Date.now();
+    const sorted = [...events].map((e) => __spreadProps(__spreadValues({}, e), { t: new Date(e.event_time).getTime() })).sort((a, b) => a.t - b.t);
+    if (sorted.length === 0) return null;
+    const nextReview = topic.next_review_at ? new Date(topic.next_review_at).getTime() : null;
+    const futureEnd = Math.max(
+      now + MIN_FUTURE_DAYS * DAY_MS,
+      nextReview ? nextReview + 2 * DAY_MS : 0
+    );
+    const start = Math.max(sorted[0].t, now - MAX_PAST_DAYS * DAY_MS) - 0.5 * DAY_MS;
+    const segments = sorted.map((e, i) => ({
+      start: e.t,
+      end: i + 1 < sorted.length ? sorted[i + 1].t : futureEnd,
+      stability: e.stability_days
+    }));
+    return { now, start, end: futureEnd, segments, points: sorted, nextReview };
+  }, [events, topic.next_review_at]);
+  if (!model) return null;
+  const plotW = Math.max(0, width - M.left - M.right);
+  const plotH = HEIGHT - M.top - M.bottom;
+  const x = (t) => M.left + (t - model.start) / (model.end - model.start) * plotW;
+  const y = (r) => M.top + (1 - r) * plotH;
+  const valueAt = (t) => {
+    const seg = model.segments.find((s) => t >= s.start && t <= s.end);
+    return seg ? retentionAt((t - seg.start) / DAY_MS, seg.stability) : null;
+  };
+  const buildPath = (from, to) => {
+    let d = "";
+    for (const seg of model.segments) {
+      const a = Math.max(seg.start, from);
+      const b = Math.min(seg.end, to);
+      if (b <= a) continue;
+      const steps = 40;
+      for (let i = 0; i <= steps; i++) {
+        const t = a + (b - a) * i / steps;
+        const r = retentionAt((t - seg.start) / DAY_MS, seg.stability);
+        d += `${d === "" ? "M" : "L"}${x(t).toFixed(1)},${y(r).toFixed(1)}`;
+      }
+    }
+    return d;
+  };
+  const pastPath = buildPath(model.start, model.now);
+  const futurePath = buildPath(model.now, model.end);
+  const firstVisible = Math.max(model.segments[0].start, model.start);
+  const areaPath = pastPath ? `${pastPath}L${x(model.now).toFixed(1)},${y(0)}L${x(firstVisible).toFixed(1)},${y(0)}Z` : "";
+  function handleMove(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const ratio = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+    setHoverT(model.start + ratio * (model.end - model.start));
+  }
+  const hoverValue = hoverT != null ? valueAt(hoverT) : null;
+  const fmt = (t) => new Date(t).toLocaleDateString(void 0, { month: "short", day: "numeric" });
+  const tooltipLeft = hoverT != null ? x(hoverT) : 0;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { ref, className: "relative w-full", style: { height: HEIGHT }, children: [
+    width > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width, height: HEIGHT, role: "img", "aria-label": `Retention history for ${topic.name}`, children: [
+      [0, 0.5, 1].map((t) => /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: M.left, x2: M.left + plotW, y1: y(t), y2: y(t), stroke: CHART.grid, strokeWidth: 1 }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("text", { x: M.left - 6, y: y(t), dy: "0.32em", textAnchor: "end", fontSize: 10, fill: CHART.textMuted, children: [
+          Math.round(t * 100),
+          "%"
+        ] })
+      ] }, t)),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("text", { x: M.left, y: HEIGHT - 5, fontSize: 10, fill: CHART.textMuted, children: fmt(model.start) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("text", { x: M.left + plotW, y: HEIGHT - 5, textAnchor: "end", fontSize: 10, fill: CHART.textMuted, children: fmt(model.end) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: x(model.now), x2: x(model.now), y1: M.top, y2: M.top + plotH, stroke: CHART.textMuted, strokeWidth: 1 }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("text", { x: x(model.now), y: HEIGHT - 5, textAnchor: "middle", fontSize: 10, fill: CHART.textSecondary, children: "Today" }),
+      areaPath && /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: areaPath, fill: CHART.accent, fillOpacity: 0.1 }),
+      pastPath && /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: pastPath, fill: "none", stroke: CHART.accent, strokeWidth: 2, strokeLinejoin: "round", strokeLinecap: "round" }),
+      futurePath && /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: futurePath, fill: "none", stroke: CHART.accent, strokeOpacity: 0.4, strokeWidth: 2, strokeLinejoin: "round", strokeLinecap: "round" }),
+      model.points.filter((p) => p.t >= model.start).map((p, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: x(p.t), cy: y(1), r: 4, fill: CHART.accent, stroke: CHART.surface, strokeWidth: 2 }, i)),
+      model.nextReview && model.nextReview > model.now && model.nextReview <= model.end && /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: x(model.nextReview), cy: y((_a = valueAt(model.nextReview)) != null ? _a : 0), r: 4, fill: CHART.surface, stroke: CHART.accent, strokeWidth: 2 }),
+      hoverT != null && hoverValue != null && /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { pointerEvents: "none", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: x(hoverT), x2: x(hoverT), y1: M.top, y2: M.top + plotH, stroke: CHART.textMuted, strokeWidth: 1 }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: x(hoverT), cy: y(hoverValue), r: 4, fill: CHART.accent, stroke: CHART.surface, strokeWidth: 2 })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("rect", { x: M.left, y: M.top, width: plotW, height: plotH, fill: "transparent", onMouseMove: handleMove, onMouseLeave: () => setHoverT(null) })
+    ] }),
+    hoverT != null && hoverValue != null && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "absolute top-1 pointer-events-none px-2.5 py-1.5 rounded-lg bg-bg-elevated border border-line-strong shadow-lg",
+        style: {
+          left: tooltipLeft,
+          transform: tooltipLeft > width / 2 ? "translateX(calc(-100% - 10px))" : "translateX(10px)"
+        },
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xxs text-text whitespace-nowrap", children: [
+            fmt(hoverT),
+            hoverT > model.now ? " (projected)" : ""
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xxs text-text-secondary whitespace-nowrap", children: [
+            Math.round(hoverValue * 100),
+            "% retained"
+          ] })
+        ]
+      }
+    )
+  ] });
+}
 function daysAgo(dateStr) {
   const diff = (Date.now() - new Date(dateStr).getTime()) / 864e5;
   if (diff < 1) return "today";
@@ -25231,7 +26065,7 @@ function StrengthDots({ strength }) {
     i
   )) });
 }
-function EventTimeline({ events, color: color2 }) {
+function EventTimeline({ events }) {
   const navigate = useNavigate();
   const setActiveSession = useSessionStore((s) => s.setActiveSession);
   if (events.length === 0) {
@@ -25254,7 +26088,7 @@ function EventTimeline({ events, color: color2 }) {
     });
     const isObserved = e.event_type === "observed" && !!e.session_identifier;
     return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-2 group", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mt-0.5 w-1.5 h-1.5 rounded-full shrink-0", style: { backgroundColor: color2 } }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mt-0.5 w-1.5 h-1.5 rounded-full shrink-0", style: { backgroundColor: CHART.accent } }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 flex items-center gap-1.5 flex-wrap", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs font-medium text-text capitalize", children: e.event_type }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xxs text-text-tertiary", children: [
@@ -25263,8 +26097,7 @@ function EventTimeline({ events, color: color2 }) {
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xxs text-text-tertiary", children: [
           "· ",
-          ret,
-          "% retained"
+          e.event_type === "quiz" && e.score != null ? `scored ${Math.round(e.score * 100)}%` : `${ret}% retained`
         ] }),
         isObserved && /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
@@ -25284,85 +26117,140 @@ function EventTimeline({ events, color: color2 }) {
 }
 function TopicRow({
   topic,
-  color: color2,
+  isHighlighted,
   events,
   isLoadingHistory,
-  onOpen
+  onOpen,
+  onHover
 }) {
   const [isOpen, setIsOpen] = reactExports.useState(false);
-  const { pct } = retentionLabel(topic.forgetting_score);
-  const isDue = topic.next_review_at ? new Date(topic.next_review_at) <= /* @__PURE__ */ new Date() : false;
+  const { pct, label, cls } = retentionLabel(topic.forgetting_score);
+  const due = isDue(topic);
+  const navigate = useNavigate();
+  const startQuiz = useQuizStore((s) => s.startQuiz);
   const lastSeen = topic.last_reviewed_at ? daysAgo(topic.last_reviewed_at) : null;
   const nextReview = topic.next_review_at ? new Date(topic.next_review_at).toLocaleDateString(void 0, { month: "short", day: "numeric" }) : null;
   function handleToggle() {
     if (!isOpen && events === void 0) onOpen();
     setIsOpen((v) => !v);
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-b border-line last:border-b-0", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        onClick: handleToggle,
-        className: "w-full px-5 py-3 flex items-center gap-3 hover:bg-surface-hover transition-colors text-left",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 rounded-full shrink-0", style: { backgroundColor: color2 } }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1 text-sm font-medium text-text truncate min-w-0", children: topic.name }),
-          isDue && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-xxs font-semibold text-error/75 bg-error/8 px-1.5 py-0.5 rounded-full", children: "Due" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-1 bg-surface-active rounded-full overflow-hidden shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "div",
-            {
-              className: "h-full rounded-full transition-all bg-accent/85",
-              style: { width: `${pct}%` }
-            }
-          ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-semibold w-9 text-right shrink-0 text-text-secondary", children: [
-            pct,
-            "%"
-          ] }),
-          lastSeen && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs text-text-tertiary w-14 text-right shrink-0 hidden sm:block", children: lastSeen }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            ChevronDown,
-            {
-              size: 12,
-              className: `text-text-tertiary shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`
-            }
-          )
-        ]
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: `grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`,
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-5 pb-4 pt-2 flex flex-col gap-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-6", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary mb-0.5", children: "Strength" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(StrengthDots, { strength: topic.strength })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary mb-0.5", children: "Reviews" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium text-text", children: topic.repetitions })
-            ] }),
-            nextReview && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary mb-0.5", children: "Next review" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `text-xs font-medium ${isDue ? "text-error/75" : "text-text"}`, children: nextReview })
-            ] }),
-            lastSeen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary mb-0.5", children: "Last recall" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium text-text", children: lastSeen })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs font-semibold text-text-tertiary uppercase tracking-wide mb-2", children: "History" }),
-            isLoadingHistory ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 10, className: "text-text-tertiary animate-spin" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs text-text-tertiary", children: "Loading…" })
-            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx(EventTimeline, { events: events != null ? events : [], color: color2 })
-          ] })
-        ] }) })
-      }
-    )
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "div",
+    {
+      className: "border-b border-line last:border-b-0",
+      onMouseEnter: () => onHover(topic.topic_id),
+      onMouseLeave: () => onHover(null),
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: handleToggle,
+            className: "w-full px-5 py-3 flex items-center gap-3 hover:bg-surface-hover transition-colors text-left",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "span",
+                {
+                  className: "w-2 h-2 rounded-full shrink-0 transition-colors",
+                  style: { backgroundColor: isHighlighted ? CHART.accent : CHART.context }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1 text-sm font-medium text-text truncate min-w-0", title: topic.name, children: topic.name }),
+              due && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0 text-xxs font-semibold text-error/75 bg-error/8 px-1.5 py-0.5 rounded-full", children: "Due" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-1 bg-surface-active rounded-full overflow-hidden shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "div",
+                {
+                  className: "h-full rounded-full transition-all bg-accent/85",
+                  style: { width: `${pct}%` }
+                }
+              ) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-semibold w-9 text-right shrink-0 text-text-secondary", children: [
+                pct,
+                "%"
+              ] }),
+              lastSeen && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs text-text-tertiary w-14 text-right shrink-0 hidden sm:block", children: lastSeen }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                ChevronDown,
+                {
+                  size: 12,
+                  className: `text-text-tertiary shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`
+                }
+              )
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: `grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`,
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-5 pb-4 pt-2 flex flex-col gap-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-x-6 gap-y-3", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary mb-0.5", children: "Retention" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `text-xs font-medium ${cls}`, children: label })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary mb-0.5", children: "Strength" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(StrengthDots, { strength: topic.strength })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary mb-0.5", children: "Reviews" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium text-text", children: topic.repetitions })
+                ] }),
+                nextReview && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary mb-0.5", children: "Next review" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `text-xs font-medium ${due ? "text-error/75" : "text-text"}`, children: nextReview })
+                ] }),
+                lastSeen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary mb-0.5", children: "Last recall" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-medium text-text", children: lastSeen })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "button",
+                  {
+                    onClick: () => {
+                      startQuiz(topic.topic_id, topic.name);
+                      navigate("/quiz");
+                    },
+                    className: "ml-auto flex items-center gap-1.5 text-xxs font-medium px-3 py-1.5 rounded-lg bg-accent text-white hover:bg-accent-hover transition-colors shrink-0",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(BrainCircuit, { size: 11 }),
+                      "Quiz me"
+                    ]
+                  }
+                )
+              ] }),
+              events && events.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs font-semibold text-text-tertiary uppercase tracking-wide mb-2", children: "Retention over time" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(TopicRetentionCurve, { topic, events })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs font-semibold text-text-tertiary uppercase tracking-wide mb-2", children: "History" }),
+                isLoadingHistory ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 10, className: "text-text-tertiary animate-spin" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xxs text-text-tertiary", children: "Loading…" })
+                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx(EventTimeline, { events: events != null ? events : [] })
+              ] })
+            ] }) })
+          }
+        )
+      ]
+    }
+  );
+}
+function StatTile({ label, value, hint, hintCls = "text-text-tertiary" }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-[120px] px-4 py-3 rounded-xl bg-surface/60 border border-line", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xxs text-text-tertiary", children: label }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xl font-semibold text-text mt-0.5", children: value }),
+    hint && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `text-xxs mt-0.5 ${hintCls}`, children: hint })
+  ] });
+}
+function SectionHeader({ title, count }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-5 pt-5 pb-2 flex items-center gap-2", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xxs font-semibold text-text-tertiary uppercase tracking-wide", children: title }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xxs text-text-tertiary", children: [
+      "· ",
+      count
+    ] })
   ] });
 }
 function TrackingView() {
@@ -25371,79 +26259,101 @@ function TrackingView() {
     isLoading,
     isRecomputing,
     error,
-    showDueOnly,
     topicHistories,
     loadingHistories,
     loadTopics,
-    toggleDueOnly,
     recompute,
     loadTopicHistory
   } = useTrackingStore();
+  const [highlightedId, setHighlightedId] = reactExports.useState(null);
   reactExports.useEffect(() => {
     loadTopics();
   }, []);
-  const sorted = [...topics].sort((a, b) => {
-    const aDue = a.next_review_at && new Date(a.next_review_at) <= /* @__PURE__ */ new Date() ? 0 : 1;
-    const bDue = b.next_review_at && new Date(b.next_review_at) <= /* @__PURE__ */ new Date() ? 0 : 1;
-    if (aDue !== bDue) return aDue - bDue;
-    return a.forgetting_score - b.forgetting_score;
+  const dueTopics = topics.filter((t) => isDue(t)).sort((a, b) => b.forgetting_score - a.forgetting_score);
+  const upcomingTopics = topics.filter((t) => !isDue(t)).sort((a, b) => {
+    const at = a.next_review_at ? new Date(a.next_review_at).getTime() : Infinity;
+    const bt = b.next_review_at ? new Date(b.next_review_at).getTime() : Infinity;
+    return at - bt;
   });
+  const avgRetention = topics.length ? Math.round(topics.reduce((sum, t) => sum + retentionPct(t), 0) / topics.length) : 0;
+  const criticalCount = topics.filter((t) => retentionPct(t) < 40).length;
+  const renderRow = (topic) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+    TopicRow,
+    {
+      topic,
+      isHighlighted: highlightedId === topic.topic_id,
+      events: topicHistories[topic.topic_id],
+      isLoadingHistory: loadingHistories.has(topic.topic_id),
+      onOpen: () => loadTopicHistory(topic.topic_id),
+      onHover: setHighlightedId
+    },
+    topic.topic_id
+  );
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-5 py-4 border-b border-line shrink-0", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Brain, { size: 16, className: "text-accent" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-sm font-semibold text-text", children: "Memory Tracking" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: toggleDueOnly,
-            className: `text-xxs font-medium px-3 py-1.5 rounded-lg transition-colors ${showDueOnly ? "bg-accent text-white" : "bg-surface text-text-secondary hover:bg-surface-hover"}`,
-            children: "Due only"
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: recompute,
-            disabled: isRecomputing,
-            className: "flex items-center gap-1.5 text-xxs font-medium px-3 py-1.5 rounded-lg bg-surface text-text-secondary hover:bg-surface-hover transition-colors disabled:opacity-50",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 11, className: isRecomputing ? "animate-spin" : "" }),
-              "Recompute"
-            ]
-          }
-        )
-      ] })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: recompute,
+          disabled: isRecomputing,
+          className: "flex items-center gap-1.5 text-xxs font-medium px-3 py-1.5 rounded-lg bg-surface text-text-secondary hover:bg-surface-hover transition-colors disabled:opacity-50",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 11, className: isRecomputing ? "animate-spin" : "" }),
+            "Recompute"
+          ]
+        }
+      )
     ] }),
-    isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center flex-1 gap-3", children: [
+    isLoading && topics.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center flex-1 gap-3", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 20, className: "text-accent animate-spin" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-text-tertiary", children: "Loading topics…" })
     ] }) : error ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center flex-1 gap-3", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingDown, { size: 32, strokeWidth: 1.2, className: "text-error" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-error", children: error }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: loadTopics, className: "text-xs text-accent hover:text-accent-hover transition-colors", children: "Retry" })
-    ] }) : sorted.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center flex-1 gap-4 text-center", children: [
+    ] }) : topics.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center flex-1 gap-4 text-center", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-5 rounded-2xl bg-accent-subtle", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingDown, { size: 36, strokeWidth: 1.2, className: "text-accent" }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-text", children: showDueOnly ? "No topics due for review" : "No topics tracked yet" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-text-tertiary max-w-xs leading-relaxed", children: showDueOnly ? "All caught up! Come back later." : "Analyze a browsing session to start tracking learning topics." })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-text", children: "No topics tracked yet" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-text-tertiary max-w-xs leading-relaxed", children: "Analyze a browsing session to start tracking learning topics." })
       ] })
-    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto thin-scrollbar", children: sorted.map((topic) => {
-      const colorIdx = topics.findIndex((t) => t.topic_id === topic.topic_id);
-      return /* @__PURE__ */ jsxRuntimeExports.jsx(
-        TopicRow,
-        {
-          topic,
-          color: TOPIC_COLORS[colorIdx % TOPIC_COLORS.length],
-          events: topicHistories[topic.topic_id],
-          isLoadingHistory: loadingHistories.has(topic.topic_id),
-          onOpen: () => loadTopicHistory(topic.topic_id)
-        },
-        topic.topic_id
-      );
-    }) })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto thin-scrollbar", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-5 pt-5 flex flex-wrap gap-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(StatTile, { label: "Tracked topics", value: String(topics.length) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          StatTile,
+          {
+            label: "Due for review",
+            value: String(dueTopics.length),
+            hint: dueTopics.length === 0 ? "All caught up" : "Review to strengthen memory"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(StatTile, { label: "Average retention", value: `${avgRetention}%` }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          StatTile,
+          {
+            label: "Critical",
+            value: String(criticalCount),
+            hint: "Below 40% retention",
+            hintCls: criticalCount > 0 ? "text-error/75" : "text-text-tertiary"
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-5 mt-3 px-4 py-4 rounded-xl bg-bg-raised border border-line", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ForgettingCurvesChart, { topics, highlightedId, onHighlight: setHighlightedId }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(SectionHeader, { title: "Due for review", count: dueTopics.length }),
+      dueTopics.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-5 pb-2 flex items-center gap-2 text-xs text-text-tertiary", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 13, className: "text-success" }),
+        "Nothing to review right now. Come back later."
+      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-y border-line", children: dueTopics.map(renderRow) }),
+      upcomingTopics.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(SectionHeader, { title: "Upcoming reviews", count: upcomingTopics.length }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-t border-line mb-5", children: upcomingTopics.map(renderRow) })
+      ] })
+    ] })
   ] });
 }
 function AppLayout() {

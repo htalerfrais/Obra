@@ -8,7 +8,8 @@ class Config {
                 'authenticate': '/authenticate',
                 'health': '/health',
                 'tracking-topics': '/tracking/topics',
-                'tracking-recompute': '/tracking/recompute'
+                'tracking-recompute': '/tracking/recompute',
+                'quiz-generate': '/quiz/generate'
             },
             production: {
                 baseUrl: 'https://your-production-api.com',
@@ -17,7 +18,8 @@ class Config {
                 'authenticate': '/authenticate',
                 'health': '/health',
                 'tracking-topics': '/tracking/topics',
-                'tracking-recompute': '/tracking/recompute'
+                'tracking-recompute': '/tracking/recompute',
+                'quiz-generate': '/quiz/generate'
             }
         };
         

@@ -7,16 +7,12 @@ interface TrackingStore {
   isLoading: boolean;
   isRecomputing: boolean;
   error: string | null;
-  showDueOnly: boolean;
   topicHistories: Record<number, RecallHistoryEvent[]>;
   loadingHistories: Set<number>;
-  selectedTopicId: number | null;
 
   loadTopics: () => Promise<void>;
-  toggleDueOnly: () => Promise<void>;
   recompute: () => Promise<void>;
   loadTopicHistory: (topicId: number) => Promise<void>;
-  selectTopic: (topicId: number | null) => void;
 }
 
 export const useTrackingStore = create<TrackingStore>((set, get) => ({
@@ -24,25 +20,18 @@ export const useTrackingStore = create<TrackingStore>((set, get) => ({
   isLoading: false,
   isRecomputing: false,
   error: null,
-  showDueOnly: false,
   topicHistories: {},
   loadingHistories: new Set(),
-  selectedTopicId: null,
 
   loadTopics: async () => {
     try {
       set({ isLoading: true, error: null });
       await extensionBridge.waitForExtensionServices();
-      const response = await extensionBridge.getTrackedTopics(get().showDueOnly);
+      const response = await extensionBridge.getTrackedTopics();
       set({ topics: response.topics ?? [], isLoading: false });
     } catch (error) {
       set({ error: error instanceof Error ? error.message : 'Unknown error', isLoading: false });
     }
-  },
-
-  toggleDueOnly: async () => {
-    set((state) => ({ showDueOnly: !state.showDueOnly }));
-    await get().loadTopics();
   },
 
   recompute: async () => {
@@ -71,9 +60,5 @@ export const useTrackingStore = create<TrackingStore>((set, get) => ({
         loadingHistories: new Set([...state.loadingHistories].filter((id) => id !== topicId)),
       }));
     }
-  },
-
-  selectTopic: (topicId: number | null) => {
-    set({ selectedTopicId: topicId });
   },
 }));

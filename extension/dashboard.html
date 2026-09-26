@@ -22,8 +22,9 @@
     <script src="config/constants.js"></script>
     <script src="config/api.config.js"></script>
     
-    <!-- React Bundle (loaded after extension services) -->
+    <!-- React Bundle (loaded after extension services). type="module" keeps its top-level
+         declarations out of the global scope shared with config/*.js (e.g. DAY_MS). -->
     <!-- This will be built from frontend/ and copied here -->
-    <script src="dashboard-assets/index.js"></script>
+    <script type="module" src="dashboard-assets/index.js"></script>
 </body>
 </html>

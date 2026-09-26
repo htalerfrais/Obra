@@ -199,6 +199,22 @@ class ApiService {
         });
     }
 
+    async generateQuiz(userToken, topicId, questionCount = 5) {
+        return this.makeRequest('quiz-generate', {
+            method: 'POST',
+            body: JSON.stringify({ topic_id: topicId, question_count: questionCount }),
+            query: { user_token: userToken }
+        });
+    }
+
+    async submitQuiz(userToken, quizSetId, answers) {
+        return this.makeRequest(`/quiz/${quizSetId}/submit`, {
+            method: 'POST',
+            body: JSON.stringify({ answers }),
+            query: { user_token: userToken }
+        });
+    }
+
     /**
      * Send chat message
      * @param {string} message - User message

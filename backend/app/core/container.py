@@ -95,7 +95,7 @@ def build_container() -> AppContainer:
     outbox_publisher = OutboxPublisher(outbox_repository)
     session_intelligence_use_case = SessionIntelligenceUseCase(clustering_engine, outbox_publisher)
     recall_service = RecallService(topic_repository, session_repository)
-    learning_content_service = LearningContentService(llm_client, learning_repository, topic_repository)
+    learning_content_service = LearningContentService(llm_client, learning_repository, topic_repository, recall_service)
     langgraph_chat_runtime = LangGraphChatRuntime(llm_client, tool_gateway)
     chat_use_case = ChatUseCase(langgraph_chat_runtime, user_service)
     outbox_handlers = {

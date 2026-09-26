@@ -16,7 +16,7 @@ class GenerateQuizRequest(BaseModel):
     topic_id: Optional[int] = None
     topic_name: Optional[str] = None
     session_identifier: Optional[str] = None
-    question_count: int = 5
+    question_count: int = Field(5, ge=1, le=15)
 
 
 class GenerateQuizResponse(BaseModel):
@@ -35,7 +35,17 @@ class SubmitQuizRequest(BaseModel):
     answers: List[QuizAnswerItem]
 
 
+class QuizItemOutcome(BaseModel):
+    question_id: int
+    is_correct: bool
+    correct_answer: str
+
+
 class SubmitQuizResponse(BaseModel):
     attempt_id: int
     score: float
     total_items: int
+    results: List[QuizItemOutcome] = Field(default_factory=list)
+    # Recall update for the quiz's topic (absent for quizzes without a topic)
+    next_review_at: Optional[datetime] = None
+    interval_days: Optional[int] = None

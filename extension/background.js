@@ -139,6 +139,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     sendResponse(historyResult);
                     break;
                 }
+
+                case 'generateQuiz': {
+                    const token = await self.Services.authService.getToken();
+                    const quizResult = await apiService.generateQuiz(token, request.topicId, request.questionCount);
+                    sendResponse(quizResult);
+                    break;
+                }
+
+                case 'submitQuiz': {
+                    const token = await self.Services.authService.getToken();
+                    const submitResult = await apiService.submitQuiz(token, request.quizSetId, request.answers);
+                    sendResponse(submitResult);
+                    break;
+                }
                     
                 default:
                     sendResponse({ error: 'Unknown action' });

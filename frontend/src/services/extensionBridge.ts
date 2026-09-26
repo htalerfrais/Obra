@@ -1,6 +1,7 @@
 /// <reference types="chrome"/>
 
 import type { TopicTrackingResponse, TopicHistoryResponse } from '../types/tracking';
+import type { GenerateQuizResponse, QuizAnswerItem, SubmitQuizResponse } from '../types/quiz';
 
 declare global {
   interface Window {
@@ -221,6 +222,28 @@ class ExtensionBridge {
       console.error('Error recomputing tracking:', error);
       throw error;
     }
+  }
+
+  async generateQuiz(topicId: number, questionCount: number): Promise<GenerateQuizResponse> {
+    await this.waitForReady();
+    const result = await this.sendMessage<{ success: boolean; data?: GenerateQuizResponse; error?: string }>({
+      action: 'generateQuiz',
+      topicId,
+      questionCount,
+    });
+    if (!result.success) throw new Error(result.error || 'Failed to generate quiz');
+    return result.data as GenerateQuizResponse;
+  }
+
+  async submitQuiz(quizSetId: number, answers: QuizAnswerItem[]): Promise<SubmitQuizResponse> {
+    await this.waitForReady();
+    const result = await this.sendMessage<{ success: boolean; data?: SubmitQuizResponse; error?: string }>({
+      action: 'submitQuiz',
+      quizSetId,
+      answers,
+    });
+    if (!result.success) throw new Error(result.error || 'Failed to submit quiz');
+    return result.data as SubmitQuizResponse;
   }
 
   /**

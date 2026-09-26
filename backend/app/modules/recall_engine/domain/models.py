@@ -9,3 +9,10 @@ class RecallState:
     forgetting_score: float
     strength: float
     next_review_at: Optional[datetime]
+
+
+@dataclass
+class QuizReviewOutcome:
+    strength: float
+    interval_days: int
+    next_review_at: datetime

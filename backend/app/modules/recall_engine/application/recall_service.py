@@ -1,11 +1,23 @@
+import math
 from datetime import datetime, timedelta, timezone
 from typing import TYPE_CHECKING, Dict, List, Optional
 
 from app.models.recall_models import TopicTrackingItem, RecallHistoryEvent, TopicHistoryResponse
+from app.modules.recall_engine.domain.models import QuizReviewOutcome
 
 if TYPE_CHECKING:
     from app.repositories.session_repository import SessionRepository
     from app.repositories.topic_repository import TopicRepository
+
+
+# Days of memory stability for a topic at full strength (strength=1.0).
+BASE_STABILITY_DAYS = 14.0
+# Minimum quiz score (0-1) that counts as a successful recall.
+QUIZ_PASS_SCORE = 0.6
+
+
+def stability_days(strength: float) -> float:
+    return round(BASE_STABILITY_DAYS * max(0.1, strength), 4)
 
 
 class RecallService:
@@ -14,8 +26,9 @@ class RecallService:
         self.session_repository = session_repository
 
     def _compute_forgetting(self, days_since_last_seen: float, strength: float) -> float:
-        base = min(1.0, days_since_last_seen / max(1.0, 14.0 * max(0.1, strength)))
-        return round(base, 4)
+        """Ebbinghaus curve: retention R = exp(-t / S), forgetting = 1 - R."""
+        retention = math.exp(-max(0.0, days_since_last_seen) / stability_days(strength))
+        return round(1.0 - retention, 4)
 
     def _coerce_utc_naive(self, value: Optional[datetime]) -> Optional[datetime]:
         """
@@ -114,6 +127,51 @@ class RecallService:
                 "forgetting_score": 0.0,
             })
 
+    def record_quiz_review(self, user_id: int, topic_id: int, score: float, reviewed_at: datetime) -> Optional[QuizReviewOutcome]:
+        """
+        Update a topic's memory after a quiz (active recall, SM-2 style):
+        a passed quiz strengthens the topic and spaces the next review further out,
+        a failed one weakens it and brings the review back to tomorrow.
+        """
+        topic = self.topic_repository.get_topic_with_state(user_id, topic_id)
+        if not topic:
+            return None
+        state = topic.get("recall_state") or {}
+        strength = float(state.get("strength", 0.5))
+        repetitions = int(state.get("repetitions", 0))
+        score = min(1.0, max(0.0, score))
+
+        if score >= QUIZ_PASS_SCORE:
+            repetitions += 1
+            strength = min(1.0, strength + 0.1 + 0.1 * score)
+            interval_days = max(1, int(round(2 ** min(repetitions, 6))))
+        else:
+            repetitions = 0
+            strength = max(0.1, strength - 0.15 * (1.0 - score))
+            interval_days = 1
+
+        reviewed_at = self._coerce_utc_naive(reviewed_at)
+        next_review_at = reviewed_at + timedelta(days=interval_days)
+        self.topic_repository.upsert_recall_state(
+            topic_id=topic_id,
+            forgetting_score=0.0,
+            strength=strength,
+            interval_days=interval_days,
+            repetitions=repetitions,
+            next_review_at=next_review_at,
+            last_reviewed_at=reviewed_at,
+        )
+        self.topic_repository.create_recall_event(topic_id, "quiz", {
+            "strength": strength,
+            "forgetting_score": 0.0,
+            "score": score,
+        })
+        return QuizReviewOutcome(
+            strength=strength,
+            interval_days=interval_days,
+            next_review_at=next_review_at,
+        )
+
     def list_topics(self, user_id: int, due_only: bool = False) -> List[TopicTrackingItem]:
         now = datetime.utcnow()
         rows = (
@@ -124,13 +182,22 @@ class RecallService:
         result: List[TopicTrackingItem] = []
         for row in rows:
             state = row.get("recall_state") or {}
+            strength = float(state.get("strength", 0.5))
+            # Compute forgetting live so the list never shows a stale score between recomputes
+            last_reviewed = self._coerce_utc_naive(state.get("last_reviewed_at"))
+            if last_reviewed:
+                days_since = (now - last_reviewed).total_seconds() / 86400.0
+                forgetting_score = self._compute_forgetting(days_since, strength)
+            else:
+                forgetting_score = float(state.get("forgetting_score", 0.0))
             result.append(
                 TopicTrackingItem(
                     topic_id=row["id"],
                     name=row["name"],
                     description=row.get("description"),
-                    forgetting_score=float(state.get("forgetting_score", 0.0)),
-                    strength=float(state.get("strength", 0.5)),
+                    forgetting_score=forgetting_score,
+                    strength=strength,
+                    stability_days=stability_days(strength),
                     repetitions=int(state.get("repetitions", 0)),
                     next_review_at=state.get("next_review_at"),
                     last_reviewed_at=state.get("last_reviewed_at"),
@@ -180,7 +247,9 @@ class RecallService:
                 event_time=e["event_time"],
                 event_type=e["event_type"],
                 strength=strength,
+                stability_days=stability_days(strength),
                 forgetting_score=forgetting_score,
                 session_identifier=payload.get("session_identifier"),
+                score=payload.get("score"),
             ))
         return TopicHistoryResponse(topic_id=topic_id, events=history)
